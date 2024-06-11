@@ -21,10 +21,6 @@ module.exports = {
         extrabold: 800,
         black: 900,
       },
-      fontStyle: {
-        normal: "normal",
-        italic: "italic",
-      },
     },
   },
   plugins: [],
