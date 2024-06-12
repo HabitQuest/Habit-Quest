@@ -35,7 +35,11 @@ module.exports = {
         // task description colors
         red: "#F0432C",
         "bright-blue": "#3384FC",
+<<<<<<< HEAD
         green: "#24AA49",
+=======
+        "bright-green": "#24AA49",
+>>>>>>> 56ae3bc (Configured tailwind color utilities and radial gradient for future styling)
       },
       backgroundImage: {
         "yellow-gradient":
