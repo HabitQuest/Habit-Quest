@@ -21,6 +21,23 @@ module.exports = {
         extrabold: 800,
         black: 900,
       },
+      colors: {
+        //primary color
+        "dark-green": "#0C1E1F",
+        green: "#153638",
+        // accent colors
+        yellow: "#CEA24F",
+        blue: "#39629B",
+        "dark-blue": "#1E4F96",
+        // task descriptor colors
+        "neon-red": "#F0432C",
+        "neon-blue": "#3384FC",
+        "neon-green": "#24AA49",
+      },
+      backgroundImage: {
+        "yellow-gradient":
+          "radial-gradient(ellipse, rgba(255,191,0,1) 0%, rgba(153,115,0,1) 100%)",
+      },
     },
   },
   plugins: [],
