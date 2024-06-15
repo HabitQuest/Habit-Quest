@@ -37,6 +37,7 @@ module.exports = {
       backgroundImage: {
         "yellow-gradient":
           "radial-gradient(ellipse, rgba(255,191,0,1) 0%, rgba(153,115,0,1) 100%)",
+        "blue-gradient": "linear-gradient(180deg, #3384FC 0%, #1E4F96 100%);",
       },
     },
   },

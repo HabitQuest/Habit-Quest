@@ -2,7 +2,7 @@ import { balthazar } from "./lib/fonts";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-8 bg-green text-white">
+    <main className="flex flex-col items-center justify-between">
       <article className="bg-dark-green rounded-lg p-8">
         <h1>Hello World</h1>
         <p className={`${balthazar.className}`}>
@@ -18,9 +18,7 @@ export default function Home() {
           <span className="rounded-l-lg p-2 bg-yellow-gradient">
             Complete 3 Habits
           </span>
-          <span className="rounded-r-lg p-2 bg-gradient-to-b from-blue to-dark-blue">
-            30XP
-          </span>
+          <span className="rounded-r-lg p-2 bg-blue-gradient">30XP</span>
         </div>
         <span className="bg-neon-red rounded-full p-2">Physical</span>
         <span className="bg-neon-blue rounded-full p-2">Mental</span>
