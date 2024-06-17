@@ -27,6 +27,7 @@ module.exports = {
         green: "#153638",
         // accent colors
         yellow: "#CEA24F",
+        gold: "#FFD15C",
         blue: "#39629B",
         "dark-blue": "#1E4F96",
         // task descriptor colors
@@ -36,7 +37,8 @@ module.exports = {
       },
       backgroundImage: {
         "yellow-gradient":
-          "radial-gradient(ellipse, rgba(255,191,0,1) 0%, rgba(153,115,0,1) 100%)",
+          "radial-gradient(58.03% 58.03% at 41.97% 50%, #FFBF00 43%, #997300 100%)",
+
         "blue-gradient": "linear-gradient(180deg, #3384FC 0%, #1E4F96 100%);",
       },
     },
