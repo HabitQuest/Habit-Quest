@@ -1,54 +1,33 @@
 import { balthazar } from "./lib/fonts";
+import BeginQuestSection from "./components/BeginQuest";
+import StarsHeading from "./components/StarsHeading";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between">
-      <article className="bg-dark-green rounded-lg sm:p-8 p-4">
-        <h1>Hello World</h1>
-        <p className={`${balthazar.className}`}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <div className="py-8 font-bold text-black">
-          <span className="rounded-l-xl p-2 px-8 bg-yellow-gradient">
-            Complete 3 Habits
-          </span>
-          <span className="rounded-r-xl p-2 text-gold bg-blue-gradient">
-            30XP
-          </span>
+    <main className="flex flex-col space-y-8 justify-center items-center">
+      <header>
+        <StarsHeading />
+        <div>
+          <h2 class="text-white text-center mt-4 sm:text-2xl text-xl">
+            Ready to embark on your next quest?
+          </h2>
         </div>
-        <div className="flex space-x-2">
-          <span className="flex-1 font-bold bg-neon-red rounded-full p-2 text-center min-w-0 max-w-xs">
-            Physical
-          </span>
-          <span className="flex-1 font-bold bg-neon-blue rounded-full p-2 text-center min-w-0 max-w-xs">
-            Mental
-          </span>
-          <span className="flex-1 font-bold bg-neon-green rounded-full p-2 text-center min-w-0 max-w-xs">
-            Swift
-          </span>
+      </header>
+      <article>
+        <BeginQuestSection />
+      </article>
+      <article className="w-full sm:max-w-4xl max-w-xl">
+        <div className={`${balthazar.className} mx-auto`}>
+          <p className="text-center text-base sm:text-lg leading-relaxed">
+            Habit Quest is a revolutionary productivity app that transforms the
+            way you build and maintain habits. By gamifying your daily routines,
+            Habit Quest makes achieving your goals an exciting and engaging
+            adventure. Choose your character – be it a powerful Warrior, a
+            cunning Rogue, or a wise Mage – and embark on quests designed to
+            help you conquer your personal challenges and unlock your full
+            potential.
+          </p>
         </div>
-      </article>
-      <article className="bg-blue p-8 rounded-lg">
-        <p className={`${balthazar.className}`}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </article>
-      <article className="bg-yellow p-8 rounded-lg">
-        <p className={`${balthazar.className}`}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
       </article>
     </main>
   );
