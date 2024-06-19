@@ -8,7 +8,7 @@ export default function Home() {
       <header>
         <StarsHeading />
         <div>
-          <h2 class="text-white text-center mt-4 sm:text-2xl text-xl">
+          <h2 className="text-white text-center mt-4 sm:text-2xl text-xl">
             Ready to embark on your next quest?
           </h2>
         </div>

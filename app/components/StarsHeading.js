@@ -34,8 +34,8 @@ export default function StarsHeading() {
               y2="58"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="white" />
-              <stop offset="1" stop-color="#999999" />
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="#999999" />
             </linearGradient>
             <linearGradient
               id="paint1_linear_7_22"
@@ -45,8 +45,8 @@ export default function StarsHeading() {
               y2="58"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="white" />
-              <stop offset="1" stop-color="#999999" />
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="#999999" />
             </linearGradient>
             <linearGradient
               id="paint2_linear_7_22"
@@ -56,8 +56,8 @@ export default function StarsHeading() {
               y2="99"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="white" />
-              <stop offset="1" stop-color="#39629B" />
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="#39629B" />
             </linearGradient>
             <linearGradient
               id="paint3_linear_7_22"
@@ -67,13 +67,13 @@ export default function StarsHeading() {
               y2="34"
               gradientUnits="userSpaceOnUse"
             >
-              <stop offset="0.125" stop-color="white" />
-              <stop offset="1" stop-color="#CEA24F" />
+              <stop offset="0.125" stopColor="white" />
+              <stop offset="1" stopColor="#CEA24F" />
             </linearGradient>
           </defs>
         </svg>
       </div>
-      <h1 class="text-white sm:text-6xl text-3xl font-bold">
+      <h1 className="text-white sm:text-6xl text-3xl font-bold">
         WELCOME TO Habit Quest!
       </h1>
     </div>
