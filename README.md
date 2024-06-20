@@ -34,3 +34,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Viewing Pull Requests On Your Dev Server
+
+Reading code is a great skill to develop, but sometimes you'll want to see how that code translates to the page before you approve changes from a pull request. How do you this with our forked repo architecture? First, add a pull request source remote, fetch the changes from that remote repository, and then switch to the development branch.
+
+```
+/Habit-Quest $ git remote add pr-source https://github.com/<user-providing-pull-request>/Habit-Quest
+/Habit-Quest $ git fetch pr-source
+/Habit-Quest $ git switch <branch-to-review>
+/Habit-Quest $ npm run dev
+```
