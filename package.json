@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:migrate": "dotenv -e .env.local prisma migrate dev --name",
+    "prisma:migrate": "dotenv -e .env.local prisma migrate dev",
     "prisma:generate-client": "dotenv -e .env.local prisma generate",
     "prisma:reset-data": "dotenv -e .env.local prisma migrate reset",
     "prisma:seed": "node app/lib/seed-db.js",
