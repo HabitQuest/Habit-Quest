@@ -27,6 +27,7 @@ export default function CharacterCard() {
               width={200}
               height={100}
               alt={character.name}
+              priority
             />
             <p className="text-center text-sm mt-2">{character.description}</p>
           </div>
