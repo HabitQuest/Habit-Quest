@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import CharacterCard from "../components/CharacterCard";
 
 export default function CharacterSelection() {
@@ -6,7 +7,9 @@ export default function CharacterSelection() {
       <section className="text-center">
         <h1 className="text-2xl">Choose Character</h1>
       </section>
-      <CharacterCard />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CharacterCard />
+      </Suspense>
     </main>
   );
 }
