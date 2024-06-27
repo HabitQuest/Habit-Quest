@@ -10,7 +10,7 @@ datasource db {
 
 model User {
   id            String     @default(cuid()) @id
-  name          String
+  username      String
   email         String     @unique
   hash          String
   createdAt     DateTime   @default(now()) @map(name: "created_at")
