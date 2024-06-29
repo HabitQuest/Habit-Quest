@@ -17,7 +17,7 @@ export default function CharacterCard() {
         {characters[selectedClass].map((character, index) => (
           <div
             key={index}
-            className="flex flex-col items-center bg-gold p-4 rounded shadow-lg mb-4"
+            className="flex flex-col items-center bg-gold p-4 h-[26rem] rounded shadow-lg mb-4"
           >
             <button className="bg-green text-xl px-16 rounded-full mb-2">
               Pick
