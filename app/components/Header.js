@@ -3,10 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../_contexts/UserContext";
 
 const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const { user, setUser } = useContext(UserContext);
   const router = useRouter();
 
   const handleNavigate = (e, path) => {
@@ -42,6 +44,17 @@ const Header = () => {
         >
           About
         </button>
+        {user?.username && (
+          <button
+            onClick={(e) => {
+              setUser(null);
+              handleNavigate(e, "/");
+            }}
+            className="py-2 hover:text-yellow"
+          >
+            Logout
+          </button>
+        )}
       </nav>
     </header>
   );

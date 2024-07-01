@@ -1,18 +1,52 @@
 "use client";
 
-import { useFormState } from "react-dom";
 import FormInput from "../components/FormInput";
 import StarSVG from "../components/StarSVG";
 import GoogleSVG from "../components/GoogleSVG";
-import { signupUser } from "../_actions/auth";
 import { balthazar } from "../lib/fonts";
-
-const initialErrorState = {
-  message: "",
-};
+import { useState, useContext } from "react";
+import { useRouter } from "next/navigation";
+import { UserContext } from "../_contexts/UserContext";
 
 export default function SignUp() {
-  const [error, formAction] = useFormState(signupUser, initialErrorState);
+  const [formState, setFormState] = useState({
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [err, setErr] = useState(null);
+  const { setUser } = useContext(UserContext);
+
+  const router = useRouter();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({ ...formState, [name]: value });
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setErr(null);
+
+    const data = await fetch("/api/sign-up", {
+      method: "POST",
+      body: JSON.stringify(formState),
+    });
+
+    const res = await data.json();
+
+    if (res.error) {
+      setErr(res.error);
+      return;
+    }
+
+    console.log(res);
+
+    setUser(res);
+
+    router.push("/class-option");
+  };
 
   return (
     <main className="flex flex-col space-y-8 justify-center items-center sm:max-w-4xl max-w-xl m-auto">
@@ -21,21 +55,20 @@ export default function SignUp() {
         <StarSVG bottom="bottom-0" right="right-12" />
       </div>
       <form
-        action={formAction}
+        onSubmit={handleSignUp}
         className="bg-dark-green flex flex-col w-full p-8 text-center mt-0"
       >
         <header>
           <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
         </header>
-        {error?.message && (
-          <p className="text-red-700 font-bold">{error.message}</p>
-        )}
+        {err && <p className="text-red-700 font-bold">{err}</p>}
         <FormInput
           label="Email"
           id="email"
           name="email"
           type="email"
           required
+          onChange={handleChange}
         />
         <FormInput
           label="Username"
@@ -43,6 +76,7 @@ export default function SignUp() {
           name="username"
           type="text"
           required
+          onChange={handleChange}
         />
         <FormInput
           label="Password"
@@ -50,6 +84,7 @@ export default function SignUp() {
           name="password"
           type="password"
           required
+          onChange={handleChange}
         />
         <FormInput
           label="Confirm Password"
@@ -57,6 +92,7 @@ export default function SignUp() {
           name="confirmPassword"
           type="password"
           required
+          onChange={handleChange}
         />
         <input
           className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white"
