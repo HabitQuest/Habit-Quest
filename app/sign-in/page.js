@@ -1,24 +1,21 @@
 "use client";
 
+import { useState, useContext } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import FormInput from "../components/FormInput";
 import StarSVG from "../components/StarSVG";
 import GoogleSVG from "../components/GoogleSVG";
 import { balthazar } from "../lib/fonts";
-import { useState, useContext } from "react";
-import { useRouter } from "next/navigation";
 import { UserContext } from "../_contexts/UserContext";
-import Link from "next/link";
 
-export default function SignUp() {
+const SignInPage = () => {
   const [formState, setFormState] = useState({
     email: "",
-    username: "",
     password: "",
-    confirmPassword: "",
   });
   const [err, setErr] = useState(null);
   const { setUser } = useContext(UserContext);
-
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -26,11 +23,13 @@ export default function SignUp() {
     setFormState({ ...formState, [name]: value });
   };
 
-  const handleSignUp = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
+    console.log(formState);
+
     setErr(null);
 
-    const data = await fetch("/api/sign-up", {
+    const data = await fetch("/api/sign-in", {
       method: "POST",
       body: JSON.stringify(formState),
     });
@@ -43,22 +42,21 @@ export default function SignUp() {
     }
 
     setUser(res);
-
-    router.push("/class-option");
+    router.push("/dashboard");
   };
 
   return (
-    <main className="flex flex-col space-y-8 justify-center items-center sm:max-w-4xl max-w-xl m-auto my-2">
-      <div className="relative w-full h-12 mt-2">
+    <main className="flex flex-col space-y-8 justify-center items-center sm:max-w-4xl max-w-xl m-auto my-4">
+      <div className="relative w-full h-12">
         <StarSVG top="top-0" left="left-12" />
         <StarSVG bottom="bottom-0" right="right-12" />
       </div>
       <form
-        onSubmit={handleSignUp}
+        onSubmit={handleSignIn}
         className="bg-dark-green flex flex-col w-full p-8 text-center mt-0"
       >
         <header>
-          <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
+          <h1 className="text-3xl font-bold mb-4">Sign In</h1>
         </header>
         {err && <p className="text-red-700 font-bold">{err}</p>}
         <FormInput
@@ -70,14 +68,6 @@ export default function SignUp() {
           onChange={handleChange}
         />
         <FormInput
-          label="Username"
-          id="username"
-          name="username"
-          type="text"
-          required
-          onChange={handleChange}
-        />
-        <FormInput
           label="Password"
           id="password"
           name="password"
@@ -85,18 +75,10 @@ export default function SignUp() {
           required
           onChange={handleChange}
         />
-        <FormInput
-          label="Confirm Password"
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          required
-          onChange={handleChange}
-        />
         <input
           className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white"
           type="submit"
-          value="Sign Up"
+          value="Sign In"
         />
         <button
           className="flex items-center justify-center rounded-xl p-2.5 my-2 bg-white text-black outline-yellow"
@@ -104,17 +86,19 @@ export default function SignUp() {
         >
           <GoogleSVG />
           <span className={`ml-2 text-lg ${balthazar.className}`}>
-            Sign Up With Google
+            Sign In With Google
           </span>
         </button>
-        <Link href="/sign-in">
-          <p className="pt-4 hover:text-yellow">Go to Signin</p>
+        <Link href="/sign-up">
+          <p className="pt-4 hover:text-yellow">Go to Signup</p>
         </Link>
       </form>
-      <div className="relative w-full h-16 mb-2">
+      <div className="relative w-full h-16">
         <StarSVG top="top-0" right="right-16" />
         <StarSVG bottom="bottom-0" left="left-16" />
       </div>
     </main>
   );
-}
+};
+
+export default SignInPage;
