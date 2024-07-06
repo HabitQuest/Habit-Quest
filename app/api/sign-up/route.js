@@ -19,6 +19,8 @@ export async function POST(request) {
         email,
         username,
         hash,
+        userClass: null,
+        userCharacter: null,
       },
     });
     delete user.hash;

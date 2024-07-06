@@ -76,12 +76,12 @@ const SignInPage = () => {
           onChange={handleChange}
         />
         <input
-          className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white"
+          className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white cursor-pointer"
           type="submit"
           value="Sign In"
         />
         <button
-          className="flex items-center justify-center rounded-xl p-2.5 my-2 bg-white text-black outline-yellow"
+          className="flex items-center justify-center rounded-xl p-2.5 my-2 bg-white text-black outline-yellow cursor-pointer"
           disabled
         >
           <GoogleSVG />
