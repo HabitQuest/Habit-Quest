@@ -5,7 +5,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { getCookie } from "../utils/cookies";
 
 const withAuth = (WrappedComponent) => {
-  return (props) => {
+  const WithAuthComponent = (props) => {
     const { user, setUser } = useUser();
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
@@ -34,6 +34,15 @@ const withAuth = (WrappedComponent) => {
 
     return <WrappedComponent {...props} />;
   };
+
+  WithAuthComponent.displayName = `withAuth(${getDisplayName(
+    WrappedComponent
+  )})`;
+  return WithAuthComponent;
 };
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || "Component";
+}
 
 export default withAuth;
