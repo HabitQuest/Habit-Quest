@@ -1,21 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../_contexts/UserContext";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { getCookie } from "../utils/cookies";
 
 const withAuth = (WrappedComponent) => {
   return (props) => {
-    const { user } = useUser();
+    const { user, setUser } = useUser();
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
-      if (!user) {
-        router.push("/sign-in");
-      } else if (!user.userClass || !user.userCharacter) {
-        router.push("/class-option");
+      const storedUser = getCookie("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
-    }, [user, router]);
+      setIsLoading(false);
+    }, [setUser]);
 
-    return user ? <WrappedComponent {...props} /> : null;
+    useEffect(() => {
+      if (!isLoading) {
+        if (!user) {
+          router.push("/sign-in");
+        } else if (!user.userClass || !user.userCharacter) {
+          router.push("/class-option");
+        }
+      }
+    }, [isLoading, user, router]);
+
+    if (isLoading) {
+      return <LoadingSpinner />;
+    }
+
+    return <WrappedComponent {...props} />;
   };
 };
 
