@@ -3,6 +3,7 @@ import ClassCard from "../components/ClassCard";
 import { useRouter } from "next/navigation";
 import { classes } from "../lib/classes";
 import { useUser } from "../_contexts/UserContext";
+import { setCookie } from "../utils/cookies";
 
 export default function ClassSelection() {
   const { user, setUser } = useUser();
@@ -21,6 +22,7 @@ export default function ClassSelection() {
       if (response.ok) {
         const updatedUser = await response.json();
         setUser(updatedUser);
+        setCookie("user", JSON.stringify(updatedUser), 3);
         router.push(`/character-option?class=${characterClass}`);
       } else {
         console.error("Failed to update user class");

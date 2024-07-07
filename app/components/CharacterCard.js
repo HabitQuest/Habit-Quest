@@ -3,6 +3,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useUser } from "../_contexts/UserContext";
 import Image from "next/image";
 import { characters } from "../lib/characters";
+import { setCookie } from "../utils/cookies";
 
 export default function CharacterCard() {
   const searchParams = useSearchParams();
@@ -23,6 +24,7 @@ export default function CharacterCard() {
       if (response.ok) {
         const updatedUser = await response.json();
         setUser(updatedUser);
+        setCookie("user", JSON.stringify(updatedUser), 3);
         router.push("/dashboard");
       } else {
         console.error("Failed to update user character");

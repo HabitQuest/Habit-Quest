@@ -8,6 +8,7 @@ import StarSVG from "../components/StarSVG";
 import GoogleSVG from "../components/GoogleSVG";
 import { balthazar } from "../lib/fonts";
 import { UserContext } from "../_contexts/UserContext";
+import { setCookie } from "../utils/cookies";
 
 const SignInPage = () => {
   const [formState, setFormState] = useState({
@@ -40,9 +41,13 @@ const SignInPage = () => {
       setErr(res.error);
       return;
     }
-
+    setCookie("user", JSON.stringify(res), 3);
     setUser(res);
-    router.push("/dashboard");
+    if (!res.userClass || !res.userCharacter) {
+      router.push("/character-option");
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   return (
