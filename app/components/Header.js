@@ -18,7 +18,13 @@ const Header = () => {
   return (
     <header className="bg-dark-green flex justify-between items-center text-white pl-4 pr-8 sticky top-0 z-10">
       <Link href="/">
-        <Image src="/logo.png" height="68" width="68" alt="Habit Quest logo" />
+        <Image
+          src="/logo.png"
+          height="68"
+          width="68"
+          alt="Habit Quest logo"
+          priority
+        />
       </Link>
       <button onClick={() => setIsNavOpen(!isNavOpen)}>
         <i className="fa fa-bars" title="Toggle Menu" />
