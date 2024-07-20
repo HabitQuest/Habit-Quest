@@ -51,14 +51,14 @@ const SignInPage = () => {
   };
 
   return (
-    <main className="flex flex-col space-y-8 justify-center items-center sm:max-w-4xl max-w-xl m-auto my-4">
-      <div className="relative w-full h-12">
+    <main className="flex flex-col space-y-8 justify-center items-center sm:max-w-4xl max-w-xl h-1/2 m-auto my-4">
+      <div className="relative w-full h-12 mb-12">
         <StarSVG top="top-0" left="left-12" />
         <StarSVG bottom="bottom-0" right="right-12" />
       </div>
       <form
         onSubmit={handleSignIn}
-        className="bg-dark-green flex flex-col w-full p-8 text-center mt-0"
+        className="bg-dark-green flex flex-col w-full p-8 text-center mt-0 rounded-2xl"
       >
         <header>
           <h1 className="text-3xl font-bold mb-4">Sign In</h1>
@@ -81,7 +81,7 @@ const SignInPage = () => {
           onChange={handleChange}
         />
         <input
-          className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white cursor-pointer"
+          className="w-full font-bold bg-yellow rounded-xl p-2.5 mt-2 outline-white cursor-pointer"
           type="submit"
           value="Sign In"
         />
@@ -95,10 +95,10 @@ const SignInPage = () => {
           </span>
         </button>
         <Link href="/sign-up">
-          <p className="pt-4 hover:text-yellow">Go to Signup</p>
+          <p className="pt-4 hover:text-yellow">Go to Sign up</p>
         </Link>
       </form>
-      <div className="relative w-full h-16">
+      <div className="relative w-full h-20">
         <StarSVG top="top-0" right="right-16" />
         <StarSVG bottom="bottom-0" left="left-16" />
       </div>

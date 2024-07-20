@@ -16,8 +16,8 @@ export default function Home() {
       <article>
         <BeginQuestSection />
       </article>
-      <article className="w-full sm:max-w-4xl max-w-xl">
-        <div className={`${balthazar.className} mx-auto`}>
+      <article className="w-full sm:max-w-4xl max-w-xl px-4 sm:px-2 py-4 sm:py-2">
+        <div className={`${balthazar.className}`}>
           <p className="text-center text-base sm:text-lg leading-relaxed">
             Habit Quest is a revolutionary productivity app that transforms the
             way you build and maintain habits. By gamifying your daily routines,
