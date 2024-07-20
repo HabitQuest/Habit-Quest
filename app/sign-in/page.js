@@ -8,6 +8,7 @@ import StarSVG from "../components/StarSVG";
 import GoogleSVG from "../components/GoogleSVG";
 import { balthazar } from "../lib/fonts";
 import { UserContext } from "../_contexts/UserContext";
+import { setCookie } from "../utils/cookies";
 
 const SignInPage = () => {
   const [formState, setFormState] = useState({
@@ -40,9 +41,13 @@ const SignInPage = () => {
       setErr(res.error);
       return;
     }
-
+    setCookie("user", JSON.stringify(res), 3);
     setUser(res);
-    router.push("/dashboard");
+    if (!res.userClass || !res.userCharacter) {
+      router.push("/character-option");
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -76,12 +81,12 @@ const SignInPage = () => {
           onChange={handleChange}
         />
         <input
-          className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white"
+          className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white cursor-pointer"
           type="submit"
           value="Sign In"
         />
         <button
-          className="flex items-center justify-center rounded-xl p-2.5 my-2 bg-white text-black outline-yellow"
+          className="flex items-center justify-center rounded-xl p-2.5 my-2 bg-white text-black outline-yellow cursor-pointer"
           disabled
         >
           <GoogleSVG />

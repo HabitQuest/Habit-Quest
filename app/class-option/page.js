@@ -2,12 +2,34 @@
 import ClassCard from "../components/ClassCard";
 import { useRouter } from "next/navigation";
 import { classes } from "../lib/classes";
+import { useUser } from "../_contexts/UserContext";
+import { setCookie } from "../utils/cookies";
 
 export default function ClassSelection() {
+  const { user, setUser } = useUser();
   const router = useRouter();
 
-  const handlePickClass = (characterClass) => {
-    router.push(`/character-option?class=${characterClass}`);
+  const handlePickClass = async (characterClass) => {
+    try {
+      const response = await fetch("/api/update-class", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user.id, userClass: characterClass }),
+      });
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUser(updatedUser);
+        setCookie("user", JSON.stringify(updatedUser), 3);
+        router.push(`/character-option?class=${characterClass}`);
+      } else {
+        console.error("Failed to update user class");
+      }
+    } catch (error) {
+      console.error("Error updating user class:", error);
+    }
   };
 
   return (
