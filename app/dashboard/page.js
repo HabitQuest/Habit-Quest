@@ -10,6 +10,7 @@ import HabitList from "../components/HabitList";
 import ClassStats from "../components/ClassStats";
 import Quests from "../components/Quests";
 import { NewHabitModal } from "../components/NewHabit";
+import OverallLevelBar from "../components/OverallLevelBar";
 
 function Dashboard() {
   const { user, setUser } = useUser();
@@ -52,6 +53,9 @@ function Dashboard() {
 
   const handleThumbsUp = async (habitId) => {
     try {
+      const habit = habits.find((habit) => habit.id === habitId);
+      if (habit.isThumbsUp) return; // Exit if already thumbs up
+
       const response = await fetch(`/api/habits/${habitId}/thumbs`, {
         method: "PUT",
         headers: {
@@ -70,6 +74,10 @@ function Dashboard() {
             habit.id === habitId ? updatedHabit : habit
           )
         );
+        const newUser = await fetch(`/api/users/${user.id}`).then((res) =>
+          res.json()
+        );
+        setUser(newUser);
       } else {
         console.error("Failed to update habit thumbs up state");
       }
@@ -80,6 +88,9 @@ function Dashboard() {
 
   const handleThumbsDown = async (habitId) => {
     try {
+      const habit = habits.find((habit) => habit.id === habitId);
+      if (habit.isThumbsDown) return; // Exit if already thumbs down
+
       const response = await fetch(`/api/habits/${habitId}/thumbs`, {
         method: "PUT",
         headers: {
@@ -98,6 +109,10 @@ function Dashboard() {
             habit.id === habitId ? updatedHabit : habit
           )
         );
+        const newUser = await fetch(`/api/users/${user.id}`).then((res) =>
+          res.json()
+        );
+        setUser(newUser);
       } else {
         console.error("Failed to update habit thumbs down state");
       }
@@ -187,12 +202,34 @@ function Dashboard() {
     }
   };
 
+  const handleResetAllHabits = async () => {
+    try {
+      const response = await fetch("/api/habits/reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user.id }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Reset API response data:", data);
+        setHabits(data);
+      } else {
+        console.error("Failed to reset all habits");
+      }
+    } catch (error) {
+      console.error("Error resetting all habits:", error);
+    }
+  };
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   if (!user) {
-    return <div>No user found</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -213,12 +250,15 @@ function Dashboard() {
           </div>
         )}
       </div>
-      <div className="flex justify-center sm:space-x-52 space-x-16 p-6 rounded shadow-md">
+      <div className="flex justify-center sm:space-x-52 space-x-16 p-6 rounded">
         <h2 className="sm:text-3xl text-xl font-bold mb-2">{user.username}</h2>
         <h1 className="text-gold sm:text-4xl text-2xl font-semibold">
           LV {user.overallLevel}
         </h1>
       </div>
+
+      <OverallLevelBar xp={user.overallEXP} level={user.overallLevel} />
+
       <div className="flex sm:w-full md:max-w-[58rem] flex-wrap space-y-8 sm:grid-flow-row lg:gap-x-8">
         <HabitList
           setShowModal={setShowModal}
@@ -237,20 +277,37 @@ function Dashboard() {
           editHabitType={editHabitType}
           setEditHabitType={setEditHabitType}
         />
-        <ClassStats playerClass={user.userClass} />
+        <ClassStats
+          playerClass={user.userClass}
+          mageProgress={user.mageEXP}
+          warriorProgress={user.warriorEXP}
+          rogueProgress={user.rogueEXP}
+          mageLevel={user.mageLevel}
+          warriorLevel={user.warriorLevel}
+          rogueLevel={user.rogueLevel}
+        />
         <Quests />
       </div>
+
       <NewHabitModal
         showModal={showModal}
         setShowModal={setShowModal}
         onSave={handleSaveHabit}
       />
-      <button
-        onClick={handleLogout}
-        className="mt-4 bg-dark-green text-white px-4 py-2 rounded"
-      >
-        Log out
-      </button>
+      <div className="flex space-x-4">
+        <button
+          onClick={handleLogout}
+          className="mt-4 bg-red-600 text-white px-4 py-2 w-[8rem] sm:w-auto rounded text-sm sm:text-base"
+        >
+          Log out
+        </button>
+        <button
+          onClick={handleResetAllHabits}
+          className="mt-4 bg-blue text-white px-10 sm:px-6 py-2 rounded text-sm sm:text-base"
+        >
+          New Day? Reset Habits
+        </button>
+      </div>
     </div>
   );
 }

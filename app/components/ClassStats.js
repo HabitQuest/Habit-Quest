@@ -1,7 +1,15 @@
 import Image from "next/image";
 import ProgressBar from "./ProgressBar";
 
-export default function ClassStats({ playerClass }) {
+export default function ClassStats({
+  playerClass,
+  mageProgress,
+  warriorProgress,
+  rogueProgress,
+  mageLevel,
+  warriorLevel,
+  rogueLevel,
+}) {
   const mageProgressColor = "linear-gradient(180deg, #3384FC 0%, #1E4F96 100%)";
   const warriorProgressColor =
     "linear-gradient(180deg, #F0432C 0%, #8A2719 100%)";
@@ -35,12 +43,29 @@ export default function ClassStats({ playerClass }) {
           />
         </div>
         <div className="w-full space-y-10 mt-7">
-          <ProgressBar progress={20} colorType={mageProgressColor} />
-          <ProgressBar progress={80} colorType={warriorProgressColor} />
-          <ProgressBar progress={30} colorType={rougeProgressColor} />
+          <ProgressBar progress={mageProgress} colorType={mageProgressColor} />
+          <ProgressBar
+            progress={warriorProgress}
+            colorType={warriorProgressColor}
+          />
+          <ProgressBar
+            progress={rogueProgress}
+            colorType={rougeProgressColor}
+          />
+        </div>
+        <div className="flex flex-col space-y-[2.14rem] ml-2 mt-7 font-bold text-white">
+          <p className="text-blue bg-yellow text-center w-[1.4rem] h-[1.4rem] rounded-full">
+            {mageLevel}
+          </p>
+          <p className="text-blue bg-yellow   text-center w-[1.4rem] h-[1.4rem] rounded-full">
+            {warriorLevel}
+          </p>
+          <p className="text-blue bg-yellow  text-center w-[1.4rem] h-[1.4rem] rounded-full">
+            {rogueLevel}
+          </p>
         </div>
       </div>
-      <div className="text-center font-bold text-3xl">
+      <div className="text-center font-bold text-3xl pt-2">
         <h1 className="[text-shadow:_0_4px_4px_rgb(0_0_0_/_25%)]">
           {playerClass}
         </h1>

@@ -6,9 +6,7 @@ export async function PUT(request, { params }) {
 
   try {
     const updatedHabit = await prisma.habit.update({
-      where: {
-        id: habitId,
-      },
+      where: { id: habitId },
       data: {
         habit,
         habitType,

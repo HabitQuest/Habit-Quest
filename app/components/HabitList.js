@@ -66,7 +66,7 @@ export default function HabitList({
   return (
     <div className="container flex flex-col justify-center items-center w-full bg-dark-green rounded-3xl pt-4">
       <div className="flex relative items-center justify-between">
-        <h1 className="flex text-center font-bold text-2xl">Habit List</h1>
+        <h1 className="flex text-center font-bold text-2xl p-2">Habit List</h1>
         <button
           className="absolute start-48 sm:start-72 text-2xl px-2 bg-green-500 text-white rounded-md"
           onClick={() => setEditMode(!editMode)}

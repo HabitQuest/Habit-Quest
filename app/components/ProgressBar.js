@@ -12,6 +12,7 @@ export default function ProgressBar({ progress, colorType }) {
       }}
     >
       <div
+        className="transition-all duration-500"
         style={{
           height: "100%",
           width: `${progress}%`,

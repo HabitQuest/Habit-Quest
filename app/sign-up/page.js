@@ -55,7 +55,7 @@ export default function SignUp() {
       </div>
       <form
         onSubmit={handleSignUp}
-        className="bg-dark-green flex flex-col w-full p-8 text-center mt-0"
+        className="bg-dark-green flex flex-col w-full p-8 text-center mt-0 rounded-2xl"
       >
         <header>
           <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
@@ -108,7 +108,7 @@ export default function SignUp() {
           </span>
         </button>
         <Link href="/sign-in">
-          <p className="pt-4 hover:text-yellow">Go to Signin</p>
+          <p className="pt-4 hover:text-yellow">Go to Sign in</p>
         </Link>
       </form>
       <div className="relative w-full h-16 mb-2">

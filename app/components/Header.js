@@ -16,7 +16,7 @@ const Header = () => {
     router.push(path);
   };
   return (
-    <header className="bg-dark-green flex justify-between items-center text-white pl-4 pr-8 sticky top-0 z-10">
+    <header className="bg-dark-green flex justify-between items-center text-white pl-4 pr-8 pb-1 sticky top-0 z-10">
       <Link href="/">
         <Image
           src="/logo.png"
