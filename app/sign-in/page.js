@@ -26,7 +26,6 @@ const SignInPage = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    console.log(formState);
 
     setErr(null);
 

@@ -80,11 +80,11 @@ export default function HabitList({
           <HabitsLoading />
         ) : (
           userHabits.map((habit) => (
-            <div className="flex space-x-6" key={habit.id}>
+            <div className="flex space-x-4" key={habit.id}>
               {editMode ? (
                 <>
                   <button
-                    className="bg-green text-neon-blue text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[3.9rem] h-[2rem]"
+                    className="bg-green text-neon-blue text-base flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
                     onClick={() => handleEditMode(habit)}
                   >
                     <IoPencil />
@@ -99,24 +99,24 @@ export default function HabitList({
                           : "bg-green"
                       } w-full px-[4vw] py-1 rounded-2xl`}
                     >
-                      <div className="w-full flex justify-center space-x-2 relative">
+                      <div className="w-full flex justify-between relative">
                         <input
                           type="text"
                           value={editHabitName}
                           onChange={(e) => setEditHabitName(e.target.value)}
-                          className="sm:w-full w-[3rem] bg-dark-green pl-2 outline-none rounded-md"
+                          className="w-full bg-dark-green pl-2 outline-none rounded-md"
                         />
                         <select
                           value={editHabitType}
                           onChange={(e) => setEditHabitType(e.target.value)}
-                          className="sm:w-full w-[1rem] bg-neon-blue outline-none rounded-md"
+                          className="sm:w-full w-[2rem] bg-neon-blue outline-none rounded-md"
                         >
                           <option value="Physical">Physical</option>
                           <option value="Mental">Mental</option>
                           <option value="Swift">Swift</option>
                         </select>
                         <button
-                          className="sm:w-[10rem] w-[3rem] text-base flex justify-center items-center text-white bg-emerald-500 rounded-xl"
+                          className="sm:w-[10rem] w-[4.6rem] text-base flex justify-center items-center text-white bg-emerald-500 rounded-xl"
                           onClick={() => handleSaveEditWithLoading(habit.id)}
                           disabled={isSaving}
                         >
@@ -148,7 +148,7 @@ export default function HabitList({
                     </div>
                   )}
                   <button
-                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[3.9em] h-[2rem]"
+                    className="bg-green text-neon-red text-base flex justify-center items-center hover:bg-dark-green rounded-full w-[4em] h-[2.32rem]"
                     onClick={() => handleDeleteHabit(habit.id)}
                   >
                     <IoTrash />
@@ -157,7 +157,7 @@ export default function HabitList({
               ) : (
                 <>
                   <button
-                    className={`bg-green text-neon-green text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[3.9rem] h-[2rem] ${
+                    className={`bg-green text-neon-green text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem] ${
                       habit.isThumbsUp ? "bg-emerald-500" : ""
                     }`}
                     onClick={() => onThumbsUp(habit.id)}
@@ -174,7 +174,7 @@ export default function HabitList({
                     } w-full px-[8vw] py-1 rounded-2xl cursor-pointer`}
                     onClick={() => resetHabitStatus(habit.id)}
                   >
-                    <div className="w-full relative">
+                    <div className="w-full flex justify-between relative">
                       <span
                         className={`${
                           typeColors[habit.habitType]
@@ -182,11 +182,19 @@ export default function HabitList({
                       >
                         {habit.habitType}
                       </span>
-                      <h2>{habit.habit}</h2>
+                      <div className="flex justify-center w-full">
+                        <h2>{habit.habit}</h2>
+                      </div>
+
+                      <div className="flex justify-end items-center">
+                        <div className="bg-dark-green rounded-xl p-[0.2rem]">
+                          <p className="text-xs  text-yellow">12:00am</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <button
-                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2rem]"
+                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
                     onClick={() => onThumbsDown(habit.id)}
                   >
                     <IoThumbsDown />

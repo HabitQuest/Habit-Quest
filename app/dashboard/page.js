@@ -12,6 +12,17 @@ import Quests from "../components/Quests";
 import { NewHabitModal } from "../components/NewHabit";
 import OverallLevelBar from "../components/OverallLevelBar";
 
+import {
+  handleSaveHabit,
+  handleThumbsUp,
+  handleThumbsDown,
+  handleEditMode,
+  handleSaveEdit,
+  handleDeleteHabit,
+  resetHabitStatus,
+  handleResetAllHabits,
+} from "./habitHandlers";
+
 function Dashboard() {
   const { user, setUser } = useUser();
   const [showModal, setShowModal] = useState(false);
@@ -44,184 +55,6 @@ function Dashboard() {
     setUser(null);
     eraseCookie("user");
     router.push("/sign-in");
-  };
-
-  const handleSaveHabit = (newHabit) => {
-    setHabits((prevHabits) => [...prevHabits, newHabit]);
-    setShowModal(false);
-  };
-
-  const handleThumbsUp = async (habitId) => {
-    try {
-      const habit = habits.find((habit) => habit.id === habitId);
-      if (habit.isThumbsUp) return; // Exit if already thumbs up
-
-      const response = await fetch(`/api/habits/${habitId}/thumbs`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          isThumbsUp: true,
-          isThumbsDown: false,
-        }),
-      });
-
-      if (response.ok) {
-        const updatedHabit = await response.json();
-        setHabits((prevHabits) =>
-          prevHabits.map((habit) =>
-            habit.id === habitId ? updatedHabit : habit
-          )
-        );
-        const newUser = await fetch(`/api/users/${user.id}`).then((res) =>
-          res.json()
-        );
-        setUser(newUser);
-      } else {
-        console.error("Failed to update habit thumbs up state");
-      }
-    } catch (error) {
-      console.error("Error updating habit thumbs up state:", error);
-    }
-  };
-
-  const handleThumbsDown = async (habitId) => {
-    try {
-      const habit = habits.find((habit) => habit.id === habitId);
-      if (habit.isThumbsDown) return; // Exit if already thumbs down
-
-      const response = await fetch(`/api/habits/${habitId}/thumbs`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          isThumbsUp: false,
-          isThumbsDown: true,
-        }),
-      });
-
-      if (response.ok) {
-        const updatedHabit = await response.json();
-        setHabits((prevHabits) =>
-          prevHabits.map((habit) =>
-            habit.id === habitId ? updatedHabit : habit
-          )
-        );
-        const newUser = await fetch(`/api/users/${user.id}`).then((res) =>
-          res.json()
-        );
-        setUser(newUser);
-      } else {
-        console.error("Failed to update habit thumbs down state");
-      }
-    } catch (error) {
-      console.error("Error updating habit thumbs down state:", error);
-    }
-  };
-
-  const handleEditMode = (habit) => {
-    setEditHabitId(habit.id);
-    setEditHabitName(habit.habit);
-    setEditHabitType(habit.habitType);
-    setEditMode(true);
-  };
-
-  const handleSaveEdit = async (id) => {
-    try {
-      const response = await fetch(`/api/habits/${id}/details`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          habit: editHabitName,
-          habitType: editHabitType,
-        }),
-      });
-
-      if (response.ok) {
-        const updatedHabit = await response.json();
-        setHabits((prevHabits) =>
-          prevHabits.map((habit) => (habit.id === id ? updatedHabit : habit))
-        );
-        setEditHabitId(null);
-        setEditMode(false);
-      } else {
-        console.error("Failed to update habit");
-      }
-    } catch (error) {
-      console.error("Error updating habit:", error);
-    }
-  };
-
-  const handleDeleteHabit = async (id) => {
-    try {
-      const response = await fetch(`/api/habits/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setHabits((prevHabits) =>
-          prevHabits.filter((habit) => habit.id !== id)
-        );
-      } else {
-        console.error("Failed to delete habit");
-      }
-    } catch (error) {
-      console.error("Error deleting habit:", error);
-    }
-  };
-
-  const resetHabitStatus = async (habitId) => {
-    try {
-      const response = await fetch(`/api/habits/${habitId}/thumbs`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          isThumbsUp: false,
-          isThumbsDown: false,
-        }),
-      });
-
-      if (response.ok) {
-        const updatedHabit = await response.json();
-        setHabits((prevHabits) =>
-          prevHabits.map((habit) =>
-            habit.id === habitId ? updatedHabit : habit
-          )
-        );
-      } else {
-        console.error("Failed to reset habit status");
-      }
-    } catch (error) {
-      console.error("Error resetting habit status:", error);
-    }
-  };
-
-  const handleResetAllHabits = async () => {
-    try {
-      const response = await fetch("/api/habits/reset", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: user.id }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Reset API response data:", data);
-        setHabits(data);
-      } else {
-        console.error("Failed to reset all habits");
-      }
-    } catch (error) {
-      console.error("Error resetting all habits:", error);
-    }
   };
 
   if (isLoading) {
@@ -263,12 +96,33 @@ function Dashboard() {
         <HabitList
           setShowModal={setShowModal}
           habits={habits}
-          onThumbsUp={handleThumbsUp}
-          onThumbsDown={handleThumbsDown}
-          resetHabitStatus={resetHabitStatus}
-          handleEditMode={handleEditMode}
-          handleSaveEdit={handleSaveEdit}
-          handleDeleteHabit={handleDeleteHabit}
+          onThumbsUp={(habitId) =>
+            handleThumbsUp(habitId, habits, setHabits, user, setUser)
+          }
+          onThumbsDown={(habitId) =>
+            handleThumbsDown(habitId, habits, setHabits, user, setUser)
+          }
+          resetHabitStatus={(habitId) => resetHabitStatus(habitId, setHabits)}
+          handleEditMode={(habit) =>
+            handleEditMode(
+              habit,
+              setEditHabitId,
+              setEditHabitName,
+              setEditHabitType,
+              setEditMode
+            )
+          }
+          handleSaveEdit={(id) =>
+            handleSaveEdit(
+              id,
+              editHabitName,
+              editHabitType,
+              setHabits,
+              setEditHabitId,
+              setEditMode
+            )
+          }
+          handleDeleteHabit={(id) => handleDeleteHabit(id, setHabits)}
           editMode={editMode}
           setEditMode={setEditMode}
           editHabitId={editHabitId}
@@ -277,6 +131,7 @@ function Dashboard() {
           editHabitType={editHabitType}
           setEditHabitType={setEditHabitType}
         />
+
         <ClassStats
           playerClass={user.userClass}
           mageProgress={user.mageEXP}
@@ -286,26 +141,29 @@ function Dashboard() {
           warriorLevel={user.warriorLevel}
           rogueLevel={user.rogueLevel}
         />
+
         <Quests />
       </div>
 
       <NewHabitModal
         showModal={showModal}
         setShowModal={setShowModal}
-        onSave={handleSaveHabit}
+        onSave={(newHabit) =>
+          handleSaveHabit(newHabit, setHabits, setShowModal)
+        }
       />
-      <div className="flex space-x-4">
+      <div className="flex sm:flex-row flex-col justify-center items-center w-full sm:space-y-0 sm:space-x-12 space-y-4 mt-24">
         <button
-          onClick={handleLogout}
-          className="mt-4 bg-red-600 text-white px-4 py-2 w-[8rem] sm:w-auto rounded text-sm sm:text-base"
-        >
-          Log out
-        </button>
-        <button
-          onClick={handleResetAllHabits}
-          className="mt-4 bg-blue text-white px-10 sm:px-6 py-2 rounded text-sm sm:text-base"
+          onClick={() => handleResetAllHabits(user.id, setHabits)}
+          className="sm:w-[30%] w-full bg-blue text-white px-4 py-2 rounded-3xl text-sm sm:text-base"
         >
           New Day? Reset Habits
+        </button>
+        <button
+          onClick={handleLogout}
+          className="sm:w-[30%] w-full bg-red-600 text-white px-4 py-2 rounded-3xl text-sm sm:text-base font-bold"
+        >
+          Log out
         </button>
       </div>
     </div>
