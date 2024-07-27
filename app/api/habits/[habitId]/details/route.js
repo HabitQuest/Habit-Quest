@@ -2,7 +2,7 @@ import prisma from "@/app/lib/prisma";
 
 export async function PUT(request, { params }) {
   const { habitId } = params;
-  const { habit, habitType } = await request.json();
+  const { habit, habitType, time } = await request.json();
 
   try {
     const updatedHabit = await prisma.habit.update({
@@ -10,6 +10,7 @@ export async function PUT(request, { params }) {
       data: {
         habit,
         habitType,
+        time,
       },
     });
     return new Response(JSON.stringify(updatedHabit), {

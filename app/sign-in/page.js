@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import FormInput from "../components/FormInput";
 import StarSVG from "../components/StarSVG";
 import GoogleSVG from "../components/GoogleSVG";
-import { balthazar } from "../lib/fonts";
+import { balthazar, cinzel } from "../lib/fonts";
 import { UserContext } from "../_contexts/UserContext";
 import { setCookie } from "../utils/cookies";
 
@@ -57,10 +57,12 @@ const SignInPage = () => {
       </div>
       <form
         onSubmit={handleSignIn}
-        className="bg-dark-green flex flex-col w-full p-8 text-center mt-0 rounded-2xl"
+        className={`bg-dark-green flex flex-col w-full p-8 text-center text-lg mt-0 rounded-2xl ${balthazar.className}`}
       >
         <header>
-          <h1 className="text-3xl font-bold mb-4">Sign In</h1>
+          <h1 className={`text-3xl font-bold mb-4 ${cinzel.className}`}>
+            Sign In
+          </h1>
         </header>
         {err && <p className="text-red-700 font-bold">{err}</p>}
         <FormInput

@@ -11,6 +11,7 @@ import ClassStats from "../components/ClassStats";
 import Quests from "../components/Quests";
 import { NewHabitModal } from "../components/NewHabit";
 import OverallLevelBar from "../components/OverallLevelBar";
+import EditHabitModal from "../components/EditHabit";
 
 import {
   handleSaveHabit,
@@ -25,13 +26,15 @@ import {
 
 function Dashboard() {
   const { user, setUser } = useUser();
-  const [showModal, setShowModal] = useState(false);
+  const [showHabitModal, setShowHabitModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [habits, setHabits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [editHabitId, setEditHabitId] = useState(null);
   const [editHabitName, setEditHabitName] = useState("");
   const [editHabitType, setEditHabitType] = useState("");
+  const [editHabitTime, setEditHabitTime] = useState("00:00");
   const router = useRouter();
 
   useEffect(() => {
@@ -94,7 +97,7 @@ function Dashboard() {
 
       <div className="flex sm:w-full md:max-w-[58rem] flex-wrap space-y-8 sm:grid-flow-row lg:gap-x-8">
         <HabitList
-          setShowModal={setShowModal}
+          setShowModal={setShowHabitModal}
           habits={habits}
           onThumbsUp={(habitId) =>
             handleThumbsUp(habitId, habits, setHabits, user, setUser)
@@ -109,7 +112,7 @@ function Dashboard() {
               setEditHabitId,
               setEditHabitName,
               setEditHabitType,
-              setEditMode
+              setShowEditModal
             )
           }
           handleSaveEdit={(id) =>
@@ -118,8 +121,7 @@ function Dashboard() {
               editHabitName,
               editHabitType,
               setHabits,
-              setEditHabitId,
-              setEditMode
+              setShowEditModal
             )
           }
           handleDeleteHabit={(id) => handleDeleteHabit(id, setHabits)}
@@ -146,12 +148,28 @@ function Dashboard() {
       </div>
 
       <NewHabitModal
-        showModal={showModal}
-        setShowModal={setShowModal}
+        showModal={showHabitModal}
+        setShowModal={setShowHabitModal}
         onSave={(newHabit) =>
-          handleSaveHabit(newHabit, setHabits, setShowModal)
+          handleSaveHabit(newHabit, setHabits, setShowHabitModal)
         }
       />
+
+      <EditHabitModal
+        showModal={showEditModal}
+        setShowModal={setShowEditModal}
+        habitId={editHabitId}
+        habitName={editHabitName}
+        habitType={editHabitType}
+        habitTime={editHabitTime}
+        setEditHabitName={setEditHabitName}
+        setEditHabitType={setEditHabitType}
+        setEditHabitTime={setEditHabitTime}
+        handleSaveEdit={(id, name, type, time) =>
+          handleSaveEdit(id, name, type, time, setHabits, setShowEditModal)
+        }
+      />
+
       <div className="flex sm:flex-row flex-col justify-center items-center w-full sm:space-y-0 sm:space-x-12 space-y-4 mt-24">
         <button
           onClick={() => handleResetAllHabits(user.id, setHabits)}

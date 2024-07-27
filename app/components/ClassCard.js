@@ -17,7 +17,7 @@ export default function ClassCard({
     setShowMore(!showMore);
   };
   return (
-    <article className="flex flex-col justify-center items-center space-y-4 mt-8 bg-dark-green p-4 sm:w-72 w-full">
+    <article className="flex flex-col justify-center items-center space-y-4 mt-8 bg-dark-green p-4 sm:w-72 w-full rounded-lg">
       <h1 className="text-xl">{title}</h1>
       <Image src={imageUrl} width={50} height={50} alt={title} />
       <p className="text-sm p-2">{description}</p>

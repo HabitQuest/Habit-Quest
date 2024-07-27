@@ -110,21 +110,21 @@ export const handleEditMode = (
   setEditHabitId,
   setEditHabitName,
   setEditHabitType,
-  setEditMode
+  setShowEditModal
 ) => {
   setEditHabitId(habit.id);
   setEditHabitName(habit.habit);
   setEditHabitType(habit.habitType);
-  setEditMode(true);
+  setShowEditModal(true);
 };
 
 export const handleSaveEdit = async (
   id,
   editHabitName,
   editHabitType,
+  editHabitTime,
   setHabits,
-  setEditHabitId,
-  setEditMode
+  setShowEditModal
 ) => {
   try {
     const response = await fetch(`/api/habits/${id}/details`, {
@@ -135,6 +135,7 @@ export const handleSaveEdit = async (
       body: JSON.stringify({
         habit: editHabitName,
         habitType: editHabitType,
+        time: editHabitTime,
       }),
     });
 
@@ -143,8 +144,7 @@ export const handleSaveEdit = async (
       setHabits((prevHabits) =>
         prevHabits.map((habit) => (habit.id === id ? updatedHabit : habit))
       );
-      setEditHabitId(null);
-      setEditMode(false);
+      setShowEditModal(false);
     } else {
       console.error("Failed to update habit");
     }
