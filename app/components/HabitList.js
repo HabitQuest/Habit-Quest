@@ -45,7 +45,12 @@ export default function HabitList({
 
   useEffect(() => {
     if (habits.length > 0) {
-      setUserHabits(habits);
+      const sortedHabits = [...habits].sort((a, b) => {
+        const timeA = a.time;
+        const timeB = b.time;
+        return timeA.localeCompare(timeB);
+      });
+      setUserHabits(sortedHabits);
     } else {
       setUserHabits([]);
     }
