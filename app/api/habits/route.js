@@ -23,13 +23,14 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { habit, habitType, userId } = await request.json();
+  const { habit, habitType, time, userId } = await request.json();
 
   try {
     const newHabit = await prisma.habit.create({
       data: {
         habit,
         habitType,
+        time,
         userId,
       },
     });

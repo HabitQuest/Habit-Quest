@@ -1,5 +1,3 @@
-"use client";
-
 import { UserProvider } from "./UserContext";
 
 export function Providers({ children }) {

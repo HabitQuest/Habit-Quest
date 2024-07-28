@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useContext, useEffect } from "react";
-import { setCookie, getCookie, eraseCookie } from "../utils/cookies";
+import { getCookie } from "cookies-next";
 
 export const UserContext = React.createContext({
   user: null,
@@ -13,19 +13,23 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedUser = getCookie("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+    const fetchUser = async () => {
+      const userCookie = getCookie("user");
+      console.log("Retrieved user cookie:", userCookie);
+      if (userCookie) {
+        try {
+          setUser(JSON.parse(userCookie));
+        } catch (error) {
+          console.error("Error parsing the user cookie:", error);
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+    };
 
-  useEffect(() => {
-    if (user) {
-      setCookie("user", JSON.stringify(user), 3);
-    } else {
-      eraseCookie("user");
-    }
-  }, [user]);
+    fetchUser();
+  }, []);
 
   return (
     <UserContext.Provider

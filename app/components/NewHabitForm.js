@@ -5,6 +5,7 @@ import { balthazar } from "../lib/fonts";
 export default function NewHabitForm({ onSave, setShowModal }) {
   const [habit, setHabitName] = useState("");
   const [habitType, setHabitType] = useState("");
+  const [habitTime, setHabitTime] = useState("00:00");
   const { user } = useUser();
 
   const handleSubmit = async (e) => {
@@ -17,6 +18,7 @@ export default function NewHabitForm({ onSave, setShowModal }) {
       body: JSON.stringify({
         habit,
         habitType,
+        time: habitTime,
         userId: user.id,
       }),
     });
@@ -27,6 +29,7 @@ export default function NewHabitForm({ onSave, setShowModal }) {
       setShowModal(false);
       setHabitName("");
       setHabitType("");
+      setHabitTime("");
     } else {
       console.error("Failed to create new habit");
     }
@@ -46,11 +49,21 @@ export default function NewHabitForm({ onSave, setShowModal }) {
           type="text"
           value={habit}
           onChange={(e) => setHabitName(e.target.value)}
-          className={`w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none placeholder:italic ${balthazar.className}`}
+          className={`w-full px-3 py-2 bg-dark-green border rounded-lg focus:outline-none placeholder:italic ${balthazar.className}`}
           placeholder="Enter habit name"
           required
         />
       </div>
+      <label className="block text-gray-100 text-sm font-bold">
+        Habit Time
+      </label>
+      <input
+        id="time"
+        type="time"
+        value={habitTime}
+        onChange={(e) => setHabitTime(e.target.value)}
+        className={`w-[6rem] bg-dark-green mb-2 p-2 border rounded ${balthazar.className}`}
+      />
 
       <div>
         <label className="block text-gray-100 text-sm font-bold mb-2">

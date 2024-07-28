@@ -19,7 +19,7 @@ export default function ClassStats({
   return (
     <div className=" w-full lg:max-w-[24rem] bg-blue p-4 rounded-3xl">
       <div className="flex">
-        <div className="flex flex-col space-y-4 p-4">
+        <div className="flex flex-col space-y-6 p-4">
           <Image
             src="/witch-hat.png"
             width={50}

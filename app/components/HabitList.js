@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useUser } from "../_contexts/UserContext";
 import { balthazar } from "../lib/fonts";
 import { IoThumbsUp, IoThumbsDown, IoPencil, IoTrash } from "react-icons/io5";
+import { formatTime } from "../utils/formatTime";
 import HabitsLoading from "./HabitsLoading";
-import ButtonLoading from "./ButtonLoading";
 
 export default function HabitList({
   setShowModal,
@@ -15,17 +15,11 @@ export default function HabitList({
   handleEditMode,
   handleSaveEdit,
   handleDeleteHabit,
-  editMode,
-  setEditMode,
-  editHabitId,
-  editHabitName,
-  setEditHabitName,
-  editHabitType,
-  setEditHabitType,
 }) {
   const [userHabits, setUserHabits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+
   const { user } = useUser();
 
   const typeColors = {
@@ -80,75 +74,47 @@ export default function HabitList({
           <HabitsLoading />
         ) : (
           userHabits.map((habit) => (
-            <div className="flex space-x-6" key={habit.id}>
+            <div className="flex space-x-4" key={habit.id}>
               {editMode ? (
                 <>
                   <button
-                    className="bg-green text-neon-blue text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[3.9rem] h-[2rem]"
+                    className="bg-green text-neon-blue text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
                     onClick={() => handleEditMode(habit)}
                   >
                     <IoPencil />
                   </button>
-                  {editHabitId === habit.id ? (
-                    <div
-                      className={`${balthazar.className} text-xl text-center ${
-                        habit.isThumbsUp
-                          ? "bg-emerald-700"
-                          : habit.isThumbsDown
-                          ? "bg-red-700"
-                          : "bg-green"
-                      } w-full px-[4vw] py-1 rounded-2xl`}
-                    >
-                      <div className="w-full flex justify-center space-x-2 relative">
-                        <input
-                          type="text"
-                          value={editHabitName}
-                          onChange={(e) => setEditHabitName(e.target.value)}
-                          className="sm:w-full w-[3rem] bg-dark-green pl-2 outline-none rounded-md"
-                        />
-                        <select
-                          value={editHabitType}
-                          onChange={(e) => setEditHabitType(e.target.value)}
-                          className="sm:w-full w-[1rem] bg-neon-blue outline-none rounded-md"
-                        >
-                          <option value="Physical">Physical</option>
-                          <option value="Mental">Mental</option>
-                          <option value="Swift">Swift</option>
-                        </select>
-                        <button
-                          className="sm:w-[10rem] w-[3rem] text-base flex justify-center items-center text-white bg-emerald-500 rounded-xl"
-                          onClick={() => handleSaveEditWithLoading(habit.id)}
-                          disabled={isSaving}
-                        >
-                          {isSaving ? <ButtonLoading /> : "Save"}
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      className={`${balthazar.className} text-xl text-center ${
-                        habit.isThumbsUp
-                          ? "bg-emerald-700"
-                          : habit.isThumbsDown
-                          ? "bg-red-700"
-                          : "bg-green"
-                      } w-full px-[8vw] py-1 rounded-2xl`}
-                      onClick={() => resetHabitStatus(habit.id)}
-                    >
-                      <div className="w-full relative">
-                        <span
-                          className={`${
-                            typeColors[habit.habitType]
-                          } absolute -top-4 -left-12 rounded-2xl text-sm px-2 w-[4.8rem]`}
-                        >
-                          {habit.habitType}
-                        </span>
+                  <div
+                    className={`${balthazar.className} text-xl text-center ${
+                      habit.isThumbsUp
+                        ? "bg-emerald-700"
+                        : habit.isThumbsDown
+                        ? "bg-red-700"
+                        : "bg-green"
+                    } w-full px-[8vw] py-1 rounded-2xl cursor-pointer`}
+                    onClick={() => resetHabitStatus(habit.id)}
+                  >
+                    <div className="w-full flex justify-center  relative">
+                      <span
+                        className={`${
+                          typeColors[habit.habitType]
+                        } absolute -top-4 -left-12 rounded-2xl text-sm px-2 w-[4.8rem]`}
+                      >
+                        {habit.habitType}
+                      </span>
+                      <div className="flex justify-center w-full">
                         <h2>{habit.habit}</h2>
                       </div>
+                      <div className="flex justify-end items-center">
+                        <div className="bg-dark-green w-12 rounded-xl p-[0.2rem]">
+                          <p className="text-xs  text-yellow">
+                            {formatTime(habit.time)}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  )}
+                  </div>
                   <button
-                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[3.9em] h-[2rem]"
+                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
                     onClick={() => handleDeleteHabit(habit.id)}
                   >
                     <IoTrash />
@@ -157,7 +123,7 @@ export default function HabitList({
               ) : (
                 <>
                   <button
-                    className={`bg-green text-neon-green text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[3.9rem] h-[2rem] ${
+                    className={`bg-green text-neon-green text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem] ${
                       habit.isThumbsUp ? "bg-emerald-500" : ""
                     }`}
                     onClick={() => onThumbsUp(habit.id)}
@@ -174,7 +140,7 @@ export default function HabitList({
                     } w-full px-[8vw] py-1 rounded-2xl cursor-pointer`}
                     onClick={() => resetHabitStatus(habit.id)}
                   >
-                    <div className="w-full relative">
+                    <div className="w-full flex justify-center relative">
                       <span
                         className={`${
                           typeColors[habit.habitType]
@@ -182,11 +148,21 @@ export default function HabitList({
                       >
                         {habit.habitType}
                       </span>
-                      <h2>{habit.habit}</h2>
+                      <div className="flex justify-center w-full">
+                        <h2>{habit.habit}</h2>
+                      </div>
+
+                      <div className="flex justify-end items-center">
+                        <div className="bg-dark-green w-12 rounded-xl p-[0.2rem]">
+                          <p className="text-xs  text-yellow">
+                            {formatTime(habit.time)}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <button
-                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2rem]"
+                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
                     onClick={() => onThumbsDown(habit.id)}
                   >
                     <IoThumbsDown />
