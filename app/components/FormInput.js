@@ -3,7 +3,7 @@ const FormInput = ({ label, id, ...props }) => {
     <div className="relative my-1">
       <input
         id={id}
-        className="bg-green block rounded-lg px-2.5 pb-2.5 pt-5 w-full text-sm appearance-none peer outline-yellow"
+        className="bg-green block rounded-lg px-2.5 pb-2.5 pt-5 w-full text-lg appearance-none peer outline-yellow"
         placeholder=""
         {...props}
       />

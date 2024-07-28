@@ -95,9 +95,13 @@ const SignInPage = () => {
             Sign In With Google
           </span>
         </button>
-        <Link href="/sign-up">
-          <p className="pt-4 hover:text-yellow">Go to Sign up</p>
-        </Link>
+
+        <p className="pt-2">
+          No account yet?
+          <Link href="/sign-up" className="text-yellow ml-1">
+            Sign up
+          </Link>
+        </p>
       </form>
       <div className="relative w-full h-20">
         <StarSVG top="top-0" right="right-16" />
