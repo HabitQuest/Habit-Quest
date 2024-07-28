@@ -45,12 +45,7 @@ export default function HabitList({
 
   useEffect(() => {
     if (habits.length > 0) {
-      const sortedHabits = [...habits].sort((a, b) => {
-        const timeA = a.time;
-        const timeB = b.time;
-        return timeA.localeCompare(timeB);
-      });
-      setUserHabits(sortedHabits);
+      setUserHabits(habits);
     } else {
       setUserHabits([]);
     }
@@ -177,12 +172,14 @@ export default function HabitList({
             </div>
           ))
         )}
-        <button
-          className="w-full font-bold text-center rounded-lg bg-green px-2 py-2 hover:text-gold"
-          onClick={() => setShowModal(true)}
-        >
-          + Add new habit
-        </button>
+        <div className="flex justify-center">
+          <button
+            className="w-[18rem] sm:w-[24rem] md:w-[30rem] font-bold text-center rounded-lg bg-green px-2 py-2 hover:text-gold mx-8"
+            onClick={() => setShowModal(true)}
+          >
+            + Add new habit
+          </button>
+        </div>
       </div>
     </div>
   );

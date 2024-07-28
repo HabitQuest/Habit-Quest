@@ -3,7 +3,7 @@
 import FormInput from "../components/FormInput";
 import StarSVG from "../components/StarSVG";
 import GoogleSVG from "../components/GoogleSVG";
-import { balthazar } from "../lib/fonts";
+import { balthazar, cinzel } from "../lib/fonts";
 import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "../_contexts/UserContext";
@@ -55,10 +55,12 @@ export default function SignUp() {
       </div>
       <form
         onSubmit={handleSignUp}
-        className="bg-dark-green flex flex-col w-full p-8 text-center mt-0 rounded-2xl"
+        className={`bg-dark-green flex flex-col w-full p-8 text-center mt-0 rounded-2xl ${balthazar.className}`}
       >
         <header>
-          <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
+          <h1 className={`text-3xl font-bold mb-4 ${cinzel.className}`}>
+            Sign Up
+          </h1>
         </header>
         {err && <p className="text-red-700 font-bold">{err}</p>}
         <FormInput
@@ -94,7 +96,7 @@ export default function SignUp() {
           onChange={handleChange}
         />
         <input
-          className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white"
+          className="w-full bg-yellow rounded-xl p-2.5 mt-2 outline-white cursor-pointer"
           type="submit"
           value="Sign Up"
         />
@@ -107,9 +109,13 @@ export default function SignUp() {
             Sign Up With Google
           </span>
         </button>
-        <Link href="/sign-in">
-          <p className="pt-4 hover:text-yellow">Go to Sign in</p>
-        </Link>
+
+        <p className="pt-2">
+          Already have an account?{" "}
+          <Link href="/sign-in" className="text-yellow ml-1">
+            Sign in
+          </Link>
+        </p>
       </form>
       <div className="relative w-full h-16 mb-2">
         <StarSVG top="top-0" right="right-16" />

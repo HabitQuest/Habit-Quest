@@ -4,6 +4,8 @@ import { useUser } from "../_contexts/UserContext";
 import Image from "next/image";
 import { characters } from "../lib/characters";
 import { setCookie } from "cookies-next";
+import { Suspense } from "react";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function CharacterCard() {
   const searchParams = useSearchParams();
@@ -52,13 +54,15 @@ export default function CharacterCard() {
             >
               Pick
             </button>
-            <Image
-              src={character.src}
-              width={200}
-              height={100}
-              alt={character.name}
-              priority
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <Image
+                src={character.src}
+                width={200}
+                height={100}
+                alt={character.name}
+                priority
+              />
+            </Suspense>
             <p className="text-center text-sm mt-2">{character.description}</p>
           </div>
         ))}

@@ -62,7 +62,7 @@ export default function NewHabitForm({ onSave, setShowModal }) {
         type="time"
         value={habitTime}
         onChange={(e) => setHabitTime(e.target.value)}
-        className={`w-[6rem] bg-dark-green mb-2 p-2 border rounded ${balthazar.className}`}
+        className={`w-[8rem] bg-dark-green mb-2 p-2 border rounded ${balthazar.className}`}
       />
 
       <div>
@@ -117,7 +117,7 @@ export default function NewHabitForm({ onSave, setShowModal }) {
 
       <div className="flex items-center justify-end">
         <button
-          className="px-6 py-2 text-white bg-emerald-500 rounded-lg"
+          className="px-6 py-2 text-white bg-emerald-500 rounded-lg mt-2"
           type="submit"
         >
           + Add

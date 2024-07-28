@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const userCookie = getCookie("user");
-      console.log("Retrieved user cookie:", userCookie);
+
       if (userCookie) {
         try {
           setUser(JSON.parse(userCookie));

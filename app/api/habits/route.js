@@ -9,6 +9,9 @@ export async function GET(request) {
       where: {
         userId: userId,
       },
+      orderBy: {
+        time: "asc",
+      },
     });
     return new Response(JSON.stringify(habits), {
       status: 200,
