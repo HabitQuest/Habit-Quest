@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../_contexts/UserContext";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { getCookie } from "../utils/cookies";
+import { getCookie } from "cookies-next";
 
 const withAuth = (WrappedComponent) => {
   const WithAuthComponent = (props) => {

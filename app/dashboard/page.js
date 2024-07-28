@@ -4,7 +4,7 @@ import withAuth from "../components/withAuth";
 import { useUser } from "../_contexts/UserContext";
 import { useState, useEffect } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { eraseCookie } from "../utils/cookies";
+import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import HabitList from "../components/HabitList";
 import ClassStats from "../components/ClassStats";
@@ -56,7 +56,7 @@ function Dashboard() {
 
   const handleLogout = () => {
     setUser(null);
-    eraseCookie("user");
+    deleteCookie("user");
     router.push("/sign-in");
   };
 

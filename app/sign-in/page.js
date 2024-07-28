@@ -8,7 +8,7 @@ import StarSVG from "../components/StarSVG";
 import GoogleSVG from "../components/GoogleSVG";
 import { balthazar, cinzel } from "../lib/fonts";
 import { UserContext } from "../_contexts/UserContext";
-import { setCookie } from "../utils/cookies";
+import { setCookie } from "cookies-next";
 
 const SignInPage = () => {
   const [formState, setFormState] = useState({
@@ -40,7 +40,7 @@ const SignInPage = () => {
       setErr(res.error);
       return;
     }
-    setCookie("user", JSON.stringify(res), 3);
+    setCookie("user", JSON.stringify(res));
     setUser(res);
     if (!res.userClass || !res.userCharacter) {
       router.push("/character-option");
