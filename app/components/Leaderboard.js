@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaCrown } from "react-icons/fa";
+import { FaCrown, FaUser } from "react-icons/fa";
 import Image from "next/image";
 
 function Leaderboard() {
@@ -38,17 +38,17 @@ function Leaderboard() {
           {leaders.map((user, index) => (
             <div
               key={index}
-              className="flex flex-row items-center justify-between px-4 py-2 border-b border-gray-200"
+              className="flex flex-row items-center px-4 py-2 border-b border-gray-200 text-white"
             >
-              <div className="flex items-center">
-                {index === 0 && <FaCrown className="text-gold mr-1" />}
+              <div className="flex items-center w-8">
+                {index === 0 && <FaCrown className="text-gold" />}
                 {index !== 0 && (
                   <span className="text-base font-bold">{index + 1}.</span>
                 )}
               </div>
 
-              {user.userCharacter && (
-                <div className="flex justify-center items-center rounded-full overflow-hidden w-10 h-10 border-2 border-yellow">
+              <div className="flex justify-center items-center rounded-full overflow-hidden w-10 h-10 border-2 border-yellow mx-4">
+                {user.userCharacter ? (
                   <Image
                     src={user.userCharacter}
                     width={60}
@@ -59,13 +59,17 @@ function Leaderboard() {
                     }}
                     priority
                   />
-                </div>
-              )}
-              <span className="text-sm sm:text-base">{user.username}</span>
-              <span className="text-xs sm:text-sm text-yellow">
+                ) : (
+                  <FaUser className="w-6 h-6 text-yellow" />
+                )}
+              </div>
+              <span className="text-sm sm:text-base flex-1 min-w-[120px]">
+                {user.username}
+              </span>
+              <span className="text-xs sm:text-sm text-yellow w-24 text-center">
                 Level {user.overallLevel}
               </span>
-              <span className="text-xs sm:text-sm text-neon-green">
+              <span className="text-xs sm:text-sm text-neon-green w-24 text-right">
                 EXP {user.overallEXP}
               </span>
             </div>
