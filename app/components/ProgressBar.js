@@ -17,6 +17,7 @@ export default function ProgressBar({ progress, colorType }) {
           height: "100%",
           width: `${progress}%`,
           background: `${colorType}`,
+          borderRadius: "16px",
         }}
       ></div>
     </div>

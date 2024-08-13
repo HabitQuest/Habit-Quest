@@ -74,7 +74,7 @@ export default function HabitList({
           <HabitsLoading />
         ) : (
           userHabits.map((habit) => (
-            <div className="flex space-x-4" key={habit.id}>
+            <div className="flex space-x-6" key={habit.id}>
               {editMode ? (
                 <>
                   <button
@@ -90,26 +90,24 @@ export default function HabitList({
                         : habit.isThumbsDown
                         ? "bg-red-700"
                         : "bg-green"
-                    } w-full px-[8vw] py-1 rounded-2xl cursor-pointer`}
+                    } w-full px-[4vw] py-1 rounded-2xl cursor-pointer`}
                     onClick={() => resetHabitStatus(habit.id)}
                   >
-                    <div className="w-full flex justify-center  relative">
+                    <div className="w-full flex justify-center relative">
                       <span
                         className={`${
                           typeColors[habit.habitType]
-                        } absolute -top-4 -left-12 rounded-2xl text-sm px-2 w-[4.8rem]`}
+                        } absolute -top-4 -left-6 rounded-2xl text-sm px-2 w-[4.6rem]`}
                       >
                         {habit.habitType}
                       </span>
                       <div className="flex justify-center w-full">
                         <h2>{habit.habit}</h2>
                       </div>
-                      <div className="flex justify-end items-center">
-                        <div className="bg-dark-green w-12 rounded-xl p-[0.2rem]">
-                          <p className="text-xs  text-yellow">
-                            {formatTime(habit.time)}
-                          </p>
-                        </div>
+                      <div className="flex justify-end items-center bg-dark-green rounded-3xl">
+                        <p className="text-xs text-yellow w-14">
+                          {formatTime(habit.time)}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -137,14 +135,14 @@ export default function HabitList({
                         : habit.isThumbsDown
                         ? "bg-red-700"
                         : "bg-green"
-                    } w-full px-[8vw] py-1 rounded-2xl cursor-pointer`}
+                    } w-full px-[4vw] py-1 rounded-2xl cursor-pointer`}
                     onClick={() => resetHabitStatus(habit.id)}
                   >
                     <div className="w-full flex justify-center relative">
                       <span
                         className={`${
                           typeColors[habit.habitType]
-                        } absolute -top-4 -left-12 rounded-2xl text-sm px-2 w-[4.8rem]`}
+                        } absolute -top-4 -left-6 rounded-2xl text-sm px-2 w-[4.6rem]`}
                       >
                         {habit.habitType}
                       </span>
@@ -152,9 +150,9 @@ export default function HabitList({
                         <h2>{habit.habit}</h2>
                       </div>
 
-                      <div className="flex justify-end items-center">
-                        <div className="bg-dark-green w-12 rounded-xl p-[0.2rem]">
-                          <p className="text-xs  text-yellow">
+                      <div className="flex justify-end items-center bg-dark-green rounded-3xl">
+                        <div className="w-14">
+                          <p className="text-xs text-yellow">
                             {formatTime(habit.time)}
                           </p>
                         </div>
@@ -174,7 +172,7 @@ export default function HabitList({
         )}
         <div className="flex justify-center">
           <button
-            className="w-[18rem] sm:w-[24rem] md:w-[30rem] font-bold text-center rounded-lg bg-green px-2 py-2 hover:text-gold mx-8"
+            className="w-[16rem] sm:w-[24rem] md:w-[30rem] font-bold text-center rounded-lg bg-green px-2 py-2 hover:text-gold mx-4"
             onClick={() => setShowModal(true)}
           >
             + Add new habit
