@@ -23,6 +23,7 @@ import {
   resetHabitStatus,
   handleResetAllHabits,
 } from "./habitHandlers";
+import Leaderboard from "../components/Leaderboard";
 
 function Dashboard() {
   const { user, setUser } = useUser();
@@ -145,6 +146,7 @@ function Dashboard() {
         />
 
         <Quests />
+        <Leaderboard />
       </div>
 
       <NewHabitModal
@@ -173,7 +175,7 @@ function Dashboard() {
       <div className="flex sm:flex-row flex-col justify-center items-center w-full sm:space-y-0 sm:space-x-12 space-y-4 mt-24">
         <button
           onClick={() => handleResetAllHabits(user.id, setHabits)}
-          className="sm:w-[30%] w-full bg-blue text-white px-4 py-2 rounded-3xl text-sm sm:text-base"
+          className="sm:w-[30%] w-full bg-blue text-white px-2 py-2 rounded-3xl text-sm sm:text-base"
         >
           New Day? Reset Habits
         </button>
