@@ -1,53 +1,34 @@
-import prisma from "@/app/lib/prisma";
+import { getHabitsByUserId, createHabit } from "@/services/habitService";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
 
   try {
-    const habits = await prisma.habit.findMany({
-      where: {
-        userId: userId,
-      },
-      orderBy: {
-        time: "asc",
-      },
-    });
-    return new Response(JSON.stringify(habits), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    //calls on the getHabitsByUserId we made in habitService.js
+    const habits = await getHabitsByUserId(userId);
+    return Response.json(habits);
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Failed to fetch habits" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.error("Failed to fetch habits:", error);
+    return new Response(
+      JSON.stringify({ error: "Failed to fetch habits" }),
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request) {
-  const { habit, habitType, time, userId } = await request.json();
+  const habitData = await request.json();
 
   try {
-    const newHabit = await prisma.habit.create({
-      data: {
-        habit,
-        habitType,
-        time,
-        userId,
-      },
-    });
-    return new Response(JSON.stringify(newHabit), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+    //calls on the createHabit we made in habitService.js
+    const newHabit = await createHabit(habitData);
+    return Response.json(newHabit, { status: 201 });
   } catch (error) {
+    console.error("Failed to create new habit:", error);
     return new Response(
       JSON.stringify({ error: "Failed to create new habit" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+      { status: 500 }
     );
   }
 }
