@@ -1,3 +1,4 @@
+// with this one you can decide if you wanna put this in users are create a seperate directory for auth
 import prisma from "@/app/lib/prisma";
 import bcrypt from "bcrypt";
 
