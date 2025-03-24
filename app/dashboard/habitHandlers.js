@@ -53,6 +53,8 @@ export const handleThumbsUp = async (
       if (userResponse.ok) {
         const updatedUser = await userResponse.json();
         setUser(updatedUser);
+        // Update the user cookie with the new data
+        document.cookie = `user=${JSON.stringify(updatedUser)}; path=/`;
       }
     } else {
       const errorText = await response.text();
@@ -113,6 +115,8 @@ export const handleThumbsDown = async (
       if (userResponse.ok) {
         const updatedUser = await userResponse.json();
         setUser(updatedUser);
+        // Update the user cookie with the new data
+        document.cookie = `user=${JSON.stringify(updatedUser)}; path=/`;
       }
     } else {
       const errorText = await response.text();
