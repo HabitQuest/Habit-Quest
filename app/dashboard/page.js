@@ -20,8 +20,6 @@ import {
   handleEditMode,
   handleSaveEdit,
   handleDeleteHabit,
-  resetHabitStatus,
-  handleResetAllHabits,
 } from "./habitHandlers";
 import Leaderboard from "../components/Leaderboard";
 
@@ -36,6 +34,7 @@ function Dashboard() {
   const [editHabitName, setEditHabitName] = useState("");
   const [editHabitType, setEditHabitType] = useState("");
   const [editHabitTime, setEditHabitTime] = useState("00:00");
+  const [editHabitDuration, setEditHabitDuration] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -70,7 +69,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="container mx-auto p-4 flex flex-col justify-center items-center">
+    <div className="container mx-auto sm:p-4 p-0 flex flex-col justify-center items-center">
       <div className="relative">
         {user?.userCharacter && (
           <div className="flex justify-center items-start w-44 h-44 rounded-full overflow-hidden border-4 border-gold">
@@ -106,13 +105,14 @@ function Dashboard() {
           onThumbsDown={(habitId) =>
             handleThumbsDown(habitId, habits, setHabits, user, setUser)
           }
-          resetHabitStatus={(habitId) => resetHabitStatus(habitId, setHabits)}
           handleEditMode={(habit) =>
             handleEditMode(
               habit,
               setEditHabitId,
               setEditHabitName,
               setEditHabitType,
+              setEditHabitTime,
+              setEditHabitDuration,
               setShowEditModal
             )
           }
@@ -164,21 +164,25 @@ function Dashboard() {
         habitName={editHabitName}
         habitType={editHabitType}
         habitTime={editHabitTime}
+        habitDuration={editHabitDuration}
         setEditHabitName={setEditHabitName}
         setEditHabitType={setEditHabitType}
         setEditHabitTime={setEditHabitTime}
-        handleSaveEdit={(id, name, type, time) =>
-          handleSaveEdit(id, name, type, time, setHabits, setShowEditModal)
+        setEditHabitDuration={setEditHabitDuration}
+        handleSaveEdit={(id, name, type, time, duration) =>
+          handleSaveEdit(
+            id,
+            name,
+            type,
+            time,
+            duration,
+            setHabits,
+            setShowEditModal
+          )
         }
       />
 
-      <div className="flex sm:flex-row flex-col justify-center items-center w-full sm:space-y-0 sm:space-x-12 space-y-4 mt-24">
-        <button
-          onClick={() => handleResetAllHabits(user.id, setHabits)}
-          className="sm:w-[30%] w-full bg-blue text-white px-2 py-2 rounded-3xl text-sm sm:text-base"
-        >
-          New Day? Reset Habits
-        </button>
+      <div className="flex sm:flex-row flex-col justify-center items-center w-full sm:space-y-0 space-y-4 mt-24">
         <button
           onClick={handleLogout}
           className="sm:w-[30%] w-full bg-red-600 text-white px-4 py-2 rounded-3xl text-sm sm:text-base font-bold"

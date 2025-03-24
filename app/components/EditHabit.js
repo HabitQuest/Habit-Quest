@@ -8,20 +8,31 @@ export default function EditHabitModal({
   habitName,
   habitType,
   habitTime,
+  habitDuration,
   handleSaveEdit,
 }) {
   const [localHabitName, setLocalHabitName] = useState(habitName);
   const [localHabitType, setLocalHabitType] = useState(habitType);
   const [localHabitTime, setLocalHabitTime] = useState(habitTime);
+  const [localHabitDuration, setLocalHabitDuration] = useState(
+    habitDuration || ""
+  );
 
   useEffect(() => {
     setLocalHabitName(habitName);
     setLocalHabitType(habitType);
     setLocalHabitTime(habitTime);
-  }, [habitName, habitType, habitTime]);
+    setLocalHabitDuration(habitDuration || "");
+  }, [habitName, habitType, habitTime, habitDuration]);
 
   const handleSave = () => {
-    handleSaveEdit(habitId, localHabitName, localHabitType, localHabitTime);
+    handleSaveEdit(
+      habitId,
+      localHabitName,
+      localHabitType,
+      localHabitTime,
+      localHabitDuration
+    );
     setShowModal(false);
   };
 
@@ -47,13 +58,36 @@ export default function EditHabitModal({
           <option value="Swift">Swift</option>
         </select>
 
-        <input
-          id="time"
-          type="time"
-          value={localHabitTime}
-          onChange={(e) => setLocalHabitTime(e.target.value)}
-          className="w-[8rem] bg-green mb-2 p-2 border rounded"
-        />
+        <div className="flex gap-4 mb-4">
+          <div>
+            <label htmlFor="time" className="block text-sm mb-1">
+              Time
+            </label>
+            <input
+              id="time"
+              type="time"
+              value={localHabitTime}
+              onChange={(e) => setLocalHabitTime(e.target.value)}
+              className="w-[8rem] bg-green p-2 border rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="duration" className="block text-sm mb-1">
+              Duration (minutes)
+            </label>
+            <input
+              id="duration"
+              type="number"
+              min="0"
+              step="1"
+              value={localHabitDuration || ""}
+              onChange={(e) => setLocalHabitDuration(e.target.value)}
+              className={`w-[8rem] bg-dark-green p-2 border rounded ${balthazar.className}`}
+              placeholder="Optional"
+            />
+          </div>
+        </div>
+
         <div className="flex justify-end space-x-4 mt-2">
           <button
             onClick={() => setShowModal(false)}

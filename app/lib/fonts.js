@@ -1,12 +1,16 @@
-import { Cinzel, Balthazar } from "next/font/google";
-
-export const cinzel = Cinzel({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  style: ["normal"],
-});
+import { Balthazar, Cinzel, Inter } from "next/font/google";
 
 export const balthazar = Balthazar({
+  weight: "400",
+  subsets: ["latin"],
+});
+
+export const cinzel = Cinzel({
+  weight: "400",
+  subsets: ["latin"],
+});
+
+export const inter = Inter({
   weight: "400",
   subsets: ["latin"],
 });
