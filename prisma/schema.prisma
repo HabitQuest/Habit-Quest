@@ -26,18 +26,76 @@ model User {
   createdAt     DateTime @default(now()) @map(name: "created_at")
   updatedAt     DateTime @updatedAt @map(name: "updated_at")
   habits        Habit[]
+  achievements  Achievement[]
+  quests        Quest[]
+  journalEntries JournalEntry[]
+  lastHabitReset DateTime?
+
+  @@index([username])
+  @@index([email])
   @@map(name: "users")
 }
 
 model Habit {
-  id          String   @id @default(cuid())
-  habit       String
-  habitType   String
-  time        String   @default("00:00")
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String
-  isThumbsUp  Boolean  @default(false)
-  isThumbsDown Boolean @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  habit         String
+  habitType     String
+  time          String   @default("00:00")
+  duration      Int      @default(15)
+  frequency     String   @default("Daily")
+  lastCompleted DateTime?
+  mood          String?
+  difficulty    Int      @default(1)
+  tags          String[]
+  isThumbsUp    Boolean  @default(false)
+  isThumbsDown  Boolean  @default(false)
+  streak        Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([habitType])
+  @@index([frequency])
 }
+
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  description String
+  achievedOn  DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([achievedOn])
+}
+
+model Quest {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  isComplete  Boolean  @default(false)
+  startedOn   DateTime @default(now())
+  completedOn DateTime?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isComplete])
+  @@index([startedOn])
+}
+
+model JournalEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  content     String   @db.Text
+  date        DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([date])
+}
+
+
+

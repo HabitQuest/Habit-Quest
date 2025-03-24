@@ -1,19 +1,24 @@
 import prisma from "@/app/lib/prisma";
 
-export async function POST(request) {
+export async function PUT(request) {
   const { userId } = await request.json();
 
   try {
-    await prisma.habit.updateMany({
+    const updatedHabits = await prisma.habit.updateMany({
       where: { userId },
-      data: { isThumbsUp: false, isThumbsDown: false },
+      data: {
+        isThumbsUp: false,
+        isThumbsDown: false,
+      },
     });
 
-    const updatedHabits = await prisma.habit.findMany({
+    // Fetch all updated habits
+    const habits = await prisma.habit.findMany({
       where: { userId },
+      orderBy: { time: "asc" },
     });
 
-    return new Response(JSON.stringify(updatedHabits), {
+    return new Response(JSON.stringify(habits), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

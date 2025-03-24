@@ -11,16 +11,22 @@ export const handleThumbsUp = async (
   setUser
 ) => {
   try {
-    const habit = habits.find((habit) => habit.id === habitId);
-    if (habit.isThumbsUp) return;
+    const habit = habits.find((h) => h.id === habitId);
+    if (!habit) {
+      console.error("Habit not found:", habitId);
+      return;
+    }
 
-    setHabits((prevHabits) =>
-      prevHabits.map((habit) =>
-        habit.id === habitId
-          ? { ...habit, isThumbsUp: true, isThumbsDown: false }
-          : habit
-      )
-    );
+    console.log("Current habit state:", {
+      id: habit.id,
+      streak: habit.streak,
+      isThumbsUp: habit.isThumbsUp,
+    });
+
+    if (habit.isThumbsUp) {
+      console.log("Habit already thumbs up");
+      return;
+    }
 
     const response = await fetch(`/api/habits/${habitId}/thumbs`, {
       method: "PUT",
@@ -35,22 +41,25 @@ export const handleThumbsUp = async (
 
     if (response.ok) {
       const updatedHabit = await response.json();
-      setHabits((prevHabits) =>
-        prevHabits.map((habit) => (habit.id === habitId ? updatedHabit : habit))
-      );
-      const newUser = await fetch(`/api/users/${user.id}`).then((res) =>
-        res.json()
-      );
-      setUser(newUser);
-    } else {
-      console.error("Failed to update habit thumbs up state");
+      console.log("Received updated habit:", updatedHabit);
 
-      setHabits(habits);
+      // Update habits state
+      setHabits((prevHabits) =>
+        prevHabits.map((h) => (h.id === habitId ? updatedHabit : h))
+      );
+
+      // Update user state
+      const userResponse = await fetch(`/api/users/${user.id}`);
+      if (userResponse.ok) {
+        const updatedUser = await userResponse.json();
+        setUser(updatedUser);
+      }
+    } else {
+      const errorText = await response.text();
+      console.error("Failed to update habit:", errorText);
     }
   } catch (error) {
-    console.error("Error updating habit thumbs up state:", error);
-
-    setHabits(habits);
+    console.error("Error in handleThumbsUp:", error);
   }
 };
 
@@ -62,16 +71,22 @@ export const handleThumbsDown = async (
   setUser
 ) => {
   try {
-    const habit = habits.find((habit) => habit.id === habitId);
-    if (habit.isThumbsDown) return;
+    const habit = habits.find((h) => h.id === habitId);
+    if (!habit) {
+      console.error("Habit not found:", habitId);
+      return;
+    }
 
-    setHabits((prevHabits) =>
-      prevHabits.map((habit) =>
-        habit.id === habitId
-          ? { ...habit, isThumbsUp: false, isThumbsDown: true }
-          : habit
-      )
-    );
+    console.log("Current habit state:", {
+      id: habit.id,
+      streak: habit.streak,
+      isThumbsDown: habit.isThumbsDown,
+    });
+
+    if (habit.isThumbsDown) {
+      console.log("Habit already thumbs down");
+      return;
+    }
 
     const response = await fetch(`/api/habits/${habitId}/thumbs`, {
       method: "PUT",
@@ -86,22 +101,25 @@ export const handleThumbsDown = async (
 
     if (response.ok) {
       const updatedHabit = await response.json();
-      setHabits((prevHabits) =>
-        prevHabits.map((habit) => (habit.id === habitId ? updatedHabit : habit))
-      );
-      const newUser = await fetch(`/api/users/${user.id}`).then((res) =>
-        res.json()
-      );
-      setUser(newUser);
-    } else {
-      console.error("Failed to update habit thumbs down state");
+      console.log("Received updated habit:", updatedHabit);
 
-      setHabits(habits);
+      // Update habits state
+      setHabits((prevHabits) =>
+        prevHabits.map((h) => (h.id === habitId ? updatedHabit : h))
+      );
+
+      // Update user state
+      const userResponse = await fetch(`/api/users/${user.id}`);
+      if (userResponse.ok) {
+        const updatedUser = await userResponse.json();
+        setUser(updatedUser);
+      }
+    } else {
+      const errorText = await response.text();
+      console.error("Failed to update habit:", errorText);
     }
   } catch (error) {
-    console.error("Error updating habit thumbs down state:", error);
-
-    setHabits(habits);
+    console.error("Error in handleThumbsDown:", error);
   }
 };
 
@@ -110,11 +128,15 @@ export const handleEditMode = (
   setEditHabitId,
   setEditHabitName,
   setEditHabitType,
+  setEditHabitTime,
+  setEditHabitDuration,
   setShowEditModal
 ) => {
   setEditHabitId(habit.id);
   setEditHabitName(habit.habit);
   setEditHabitType(habit.habitType);
+  setEditHabitTime(habit.time);
+  setEditHabitDuration(habit.duration || "");
   setShowEditModal(true);
 };
 
@@ -123,6 +145,7 @@ export const handleSaveEdit = async (
   editHabitName,
   editHabitType,
   editHabitTime,
+  editHabitDuration,
   setHabits,
   setShowEditModal
 ) => {
@@ -136,6 +159,7 @@ export const handleSaveEdit = async (
         habit: editHabitName,
         habitType: editHabitType,
         time: editHabitTime,
+        duration: editHabitDuration ? parseInt(editHabitDuration) : null,
       }),
     });
 
@@ -169,36 +193,10 @@ export const handleDeleteHabit = async (id, setHabits) => {
   }
 };
 
-export const resetHabitStatus = async (habitId, setHabits) => {
-  try {
-    const response = await fetch(`/api/habits/${habitId}/thumbs`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        isThumbsUp: false,
-        isThumbsDown: false,
-      }),
-    });
-
-    if (response.ok) {
-      const updatedHabit = await response.json();
-      setHabits((prevHabits) =>
-        prevHabits.map((habit) => (habit.id === habitId ? updatedHabit : habit))
-      );
-    } else {
-      console.error("Failed to reset habit status");
-    }
-  } catch (error) {
-    console.error("Error resetting habit status:", error);
-  }
-};
-
 export const handleResetAllHabits = async (userId, setHabits) => {
   try {
     const response = await fetch("/api/habits/reset", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -206,8 +204,8 @@ export const handleResetAllHabits = async (userId, setHabits) => {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      setHabits(data);
+      const updatedHabits = await response.json();
+      setHabits(updatedHabits);
     } else {
       console.error("Failed to reset all habits");
     }

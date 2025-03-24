@@ -6,6 +6,7 @@ export default function NewHabitForm({ onSave, setShowModal }) {
   const [habit, setHabitName] = useState("");
   const [habitType, setHabitType] = useState("");
   const [habitTime, setHabitTime] = useState("00:00");
+  const [habitDuration, setHabitDuration] = useState("");
   const { user } = useUser();
 
   const handleSubmit = async (e) => {
@@ -19,6 +20,7 @@ export default function NewHabitForm({ onSave, setShowModal }) {
         habit,
         habitType,
         time: habitTime,
+        duration: habitDuration ? parseInt(habitDuration) : null,
         userId: user.id,
       }),
     });
@@ -30,6 +32,7 @@ export default function NewHabitForm({ onSave, setShowModal }) {
       setHabitName("");
       setHabitType("");
       setHabitTime("");
+      setHabitDuration("");
     } else {
       console.error("Failed to create new habit");
     }
@@ -54,16 +57,36 @@ export default function NewHabitForm({ onSave, setShowModal }) {
           required
         />
       </div>
-      <label className="block text-gray-100 text-sm font-bold">
-        Habit Time
-      </label>
-      <input
-        id="time"
-        type="time"
-        value={habitTime}
-        onChange={(e) => setHabitTime(e.target.value)}
-        className={`w-[8rem] bg-dark-green mb-2 p-2 border rounded ${balthazar.className}`}
-      />
+
+      <div className="flex gap-4">
+        <div>
+          <label className="block text-gray-100 text-sm font-bold mb-2">
+            Habit Time
+          </label>
+          <input
+            id="time"
+            type="time"
+            value={habitTime}
+            onChange={(e) => setHabitTime(e.target.value)}
+            className={`w-[8rem] bg-dark-green p-2 border rounded ${balthazar.className}`}
+          />
+        </div>
+        <div>
+          <label className="block text-gray-100 text-sm font-bold mb-2">
+            Duration (minutes)
+          </label>
+          <input
+            id="duration"
+            type="number"
+            min="0"
+            step="1"
+            value={habitDuration}
+            onChange={(e) => setHabitDuration(e.target.value)}
+            className={`w-[8rem] bg-dark-green p-2 border rounded ${balthazar.className}`}
+            placeholder="Optional"
+          />
+        </div>
+      </div>
 
       <div>
         <label className="block text-gray-100 text-sm font-bold mb-2">

@@ -1,183 +1,67 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useUser } from "../_contexts/UserContext";
-import { balthazar } from "../lib/fonts";
-import { IoThumbsUp, IoThumbsDown, IoPencil, IoTrash } from "react-icons/io5";
-import { formatTime } from "../utils/formatTime";
+import { useState } from "react";
+import { IoPencil } from "react-icons/io5";
 import HabitsLoading from "./HabitsLoading";
+import HabitCard from "./HabitCard";
 
 export default function HabitList({
   setShowModal,
   habits,
   onThumbsUp,
   onThumbsDown,
-  resetHabitStatus,
   handleEditMode,
-  handleSaveEdit,
   handleDeleteHabit,
 }) {
-  const [userHabits, setUserHabits] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
 
-  const { user } = useUser();
-
-  const typeColors = {
-    Physical: "bg-neon-red",
-    Mental: "bg-neon-blue",
-    Swift: "bg-neon-green",
+  const handleThumbsUpClick = (habitId) => {
+    console.log("HabitList: Thumbs up clicked for habit:", habitId);
+    onThumbsUp(habitId);
   };
 
-  useEffect(() => {
-    if (user) {
-      fetch(`/api/habits?userId=${user.id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setUserHabits(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch habits:", error);
-          setIsLoading(false);
-        });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (habits.length > 0) {
-      setUserHabits(habits);
-    } else {
-      setUserHabits([]);
-    }
-  }, [habits]);
-
-  const handleSaveEditWithLoading = async (id) => {
-    setIsSaving(true);
-    await handleSaveEdit(id);
-    setIsSaving(false);
+  const handleThumbsDownClick = (habitId) => {
+    console.log("HabitList: Thumbs down clicked for habit:", habitId);
+    onThumbsDown(habitId);
   };
 
   return (
-    <div className="container flex flex-col justify-center items-center w-full bg-dark-green rounded-3xl pt-4">
-      <div className="flex relative items-center justify-between">
-        <h1 className="flex text-center font-bold text-2xl p-2">Habit List</h1>
-        <button
-          className="absolute start-48 sm:start-72 text-2xl px-2 bg-green-500 text-white rounded-md"
-          onClick={() => setEditMode(!editMode)}
-        >
-          ⁝
-        </button>
-      </div>
-
-      <div className="p-4 flex flex-col space-y-8 mb-2">
-        {isLoading ? (
-          <HabitsLoading />
-        ) : (
-          userHabits.map((habit) => (
-            <div className="flex space-x-6" key={habit.id}>
-              {editMode ? (
-                <>
-                  <button
-                    className="bg-green text-neon-blue text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
-                    onClick={() => handleEditMode(habit)}
-                  >
-                    <IoPencil />
-                  </button>
-                  <div
-                    className={`${balthazar.className} text-xl text-center ${
-                      habit.isThumbsUp
-                        ? "bg-emerald-700"
-                        : habit.isThumbsDown
-                        ? "bg-red-700"
-                        : "bg-green"
-                    } w-full px-[4vw] py-1 rounded-2xl cursor-pointer`}
-                    onClick={() => resetHabitStatus(habit.id)}
-                  >
-                    <div className="w-full flex justify-center relative">
-                      <span
-                        className={`${
-                          typeColors[habit.habitType]
-                        } absolute -top-4 -left-6 rounded-2xl text-sm px-2 w-[4.6rem]`}
-                      >
-                        {habit.habitType}
-                      </span>
-                      <div className="flex justify-center w-full">
-                        <h2>{habit.habit}</h2>
-                      </div>
-                      <div className="flex justify-end items-center bg-dark-green rounded-3xl">
-                        <p className="text-xs text-yellow w-14">
-                          {formatTime(habit.time)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
-                    onClick={() => handleDeleteHabit(habit.id)}
-                  >
-                    <IoTrash />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className={`bg-green text-neon-green text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem] ${
-                      habit.isThumbsUp ? "bg-emerald-500" : ""
-                    }`}
-                    onClick={() => onThumbsUp(habit.id)}
-                  >
-                    <IoThumbsUp />
-                  </button>
-                  <div
-                    className={`${balthazar.className} text-xl text-center ${
-                      habit.isThumbsUp
-                        ? "bg-emerald-700"
-                        : habit.isThumbsDown
-                        ? "bg-red-700"
-                        : "bg-green"
-                    } w-full px-[4vw] py-1 rounded-2xl cursor-pointer`}
-                    onClick={() => resetHabitStatus(habit.id)}
-                  >
-                    <div className="w-full flex justify-center relative">
-                      <span
-                        className={`${
-                          typeColors[habit.habitType]
-                        } absolute -top-4 -left-6 rounded-2xl text-sm px-2 w-[4.6rem]`}
-                      >
-                        {habit.habitType}
-                      </span>
-                      <div className="flex justify-center w-full">
-                        <h2>{habit.habit}</h2>
-                      </div>
-
-                      <div className="flex justify-end items-center bg-dark-green rounded-3xl">
-                        <div className="w-14">
-                          <p className="text-xs text-yellow">
-                            {formatTime(habit.time)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    className="bg-green text-neon-red text-lg flex justify-center items-center hover:bg-dark-green rounded-full w-[4rem] h-[2.32rem]"
-                    onClick={() => onThumbsDown(habit.id)}
-                  >
-                    <IoThumbsDown />
-                  </button>
-                </>
-              )}
-            </div>
-          ))
-        )}
-        <div className="flex justify-center">
+    <div className="w-full">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl text-yellow font-bold">Daily Habits</h1>
+        <div className="flex items-center gap-4">
           <button
-            className="w-[16rem] sm:w-[24rem] md:w-[30rem] font-bold text-center rounded-lg bg-green px-2 py-2 hover:text-gold mx-4"
+            className={`bg-dark-green text-lg flex justify-center items-center hover:bg-[#1A1A1A] transition-colors duration-200 rounded-full w-12 h-12 ${
+              editMode ? "text-neon-blue" : "text-white"
+            }`}
+            onClick={() => setEditMode(!editMode)}
+          >
+            <IoPencil />
+          </button>
+          <button
+            className="bg-dark-green text-white px-4 py-2 rounded-xl hover:bg-[#B65D04]"
             onClick={() => setShowModal(true)}
           >
-            + Add new habit
+            + New Habit
           </button>
         </div>
+      </div>
+
+      <div className="space-y-4">
+        {!habits ? (
+          <HabitsLoading />
+        ) : (
+          habits.map((habit) => (
+            <HabitCard
+              key={habit.id}
+              habit={habit}
+              editMode={editMode}
+              onThumbsUp={handleThumbsUpClick}
+              onThumbsDown={handleThumbsDownClick}
+              handleEditMode={handleEditMode}
+              handleDeleteHabit={handleDeleteHabit}
+            />
+          ))
+        )}
       </div>
     </div>
   );

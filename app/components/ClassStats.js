@@ -17,7 +17,7 @@ export default function ClassStats({
     "linear-gradient(180deg, #24AA49 0%, #0E441D 100%)";
 
   return (
-    <div className=" w-full lg:max-w-[24rem] bg-blue p-4 rounded-3xl">
+    <div className="w-full lg:max-w-[24rem] bg-blue p-4 rounded-3xl">
       <div className="flex">
         <div className="flex flex-col space-y-6 p-4">
           <Image

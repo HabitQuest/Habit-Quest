@@ -24,7 +24,11 @@ module.exports = {
       colors: {
         //primary color
         "dark-green": "#0C1E1F",
+        "dark-red": "#8B1818",
+        "dark-blue": "#1E2B8B",
+        "dark-task-green": "#0B4A1E",
         green: "#153638",
+        "bright-green": "#24AA49",
         // accent colors
         yellow: "#CEA24F",
         gold: "#FFD15C",

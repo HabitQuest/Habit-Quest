@@ -11,21 +11,37 @@ export async function PUT(request, { params }) {
     });
 
     if (!habit) {
+      console.error("Habit not found:", habitId);
       return new Response("Habit not found", { status: 404 });
     }
 
-    // If habit is already in the desired state, do nothing
-    if (
-      habit.isThumbsUp === isThumbsUp &&
-      habit.isThumbsDown === isThumbsDown
-    ) {
-      return new Response("No status change", { status: 200 });
+    // Calculate streak changes
+    let newStreak = habit.streak || 0;
+    let lastCompleted = habit.lastCompleted;
+
+    if (isThumbsUp) {
+      // Increment streak on thumbs up
+      newStreak = newStreak + 1;
+      lastCompleted = new Date().toISOString();
+    } else if (isThumbsDown) {
+      // Reset streak on thumbs down
+      newStreak = 0;
     }
+
+    console.log("Updating streak:", {
+      habitId,
+      oldStreak: habit.streak,
+      newStreak,
+      lastCompleted,
+    });
 
     // Calculate XP change
     let xpChange = 0;
-    if (isThumbsUp) xpChange = 10;
-    if (isThumbsDown) xpChange = -5;
+    if (isThumbsUp) {
+      xpChange = 10;
+    } else if (isThumbsDown) {
+      xpChange = -5;
+    }
 
     // If user is at level 1 with no XP and thumbs down is hit, don't apply the XP change
     if (
@@ -47,72 +63,39 @@ export async function PUT(request, { params }) {
       newXP = Math.max(0, newXP + 100);
     }
 
-    // Update class stats based on habit type
-    let classStatsUpdate = {};
-    if (isThumbsUp) {
-      switch (habit.habitType) {
-        case "Physical":
-          classStatsUpdate = {
-            warriorEXP: habit.user.warriorEXP + 10,
-            warriorLevel: habit.user.warriorLevel,
-          };
-          if (classStatsUpdate.warriorEXP >= 100) {
-            classStatsUpdate.warriorLevel += 1;
-            classStatsUpdate.warriorEXP -= 100;
-          }
-          break;
-        case "Mental":
-          classStatsUpdate = {
-            mageEXP: habit.user.mageEXP + 10,
-            mageLevel: habit.user.mageLevel,
-          };
-          if (classStatsUpdate.mageEXP >= 100) {
-            classStatsUpdate.mageLevel += 1;
-            classStatsUpdate.mageEXP -= 100;
-          }
-          break;
-        case "Swift":
-          classStatsUpdate = {
-            rogueEXP: habit.user.rogueEXP + 10,
-            rogueLevel: habit.user.rogueLevel,
-          };
-          if (classStatsUpdate.rogueEXP >= 100) {
-            classStatsUpdate.rogueLevel += 1;
-            classStatsUpdate.rogueEXP -= 100;
-          }
-          break;
-        default:
-          break;
-      }
-    }
-
-    const updatedUserData = {
-      overallEXP: newXP,
-      overallLevel: newLevel,
-      ...classStatsUpdate,
-    };
-
-    await prisma.user.update({
+    // Update user first
+    const updatedUser = await prisma.user.update({
       where: { id: habit.userId },
-      data: updatedUserData,
+      data: {
+        overallEXP: newXP,
+        overallLevel: newLevel,
+      },
     });
 
+    // Then update habit with streak information
     const updatedHabit = await prisma.habit.update({
       where: { id: habitId },
       data: {
         isThumbsUp,
         isThumbsDown,
+        streak: newStreak,
+        lastCompleted,
       },
     });
+
+    console.log("Updated habit:", updatedHabit);
 
     return new Response(JSON.stringify(updatedHabit), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error updating habit thumbs state:", error);
+    console.error("Error updating habit:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to update habit thumbs state" }),
+      JSON.stringify({
+        error: "Failed to update habit",
+        details: error.message,
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
