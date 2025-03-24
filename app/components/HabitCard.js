@@ -37,7 +37,9 @@ export default function HabitCard({
   };
 
   return (
-    <div className={`${typeColors[habit.habitType]} rounded-xl p-4 mb-4`}>
+    <div
+      className={`${typeColors[habit.habitType]} rounded-xl sm:p-4 p-1 mb-4`}
+    >
       {/* Main Content */}
       <div className="flex items-center">
         {/* Left Buttons Container */}
@@ -64,7 +66,7 @@ export default function HabitCard({
               }`}
               onClick={handleThumbsUpClick}
             >
-              <IoThumbsUp className="w-5 h-5" />
+              <IoThumbsUp className="min-w-[16px] min-h-[16px] sm:w-5 sm:h-5" />
             </button>
             <button
               className={`bg-[#2A2A2A] flex justify-center items-center hover:bg-[#1A1A1A] transition-colors duration-200 rounded-full w-12 h-12 ${
@@ -72,7 +74,7 @@ export default function HabitCard({
               }`}
               onClick={handleThumbsDownClick}
             >
-              <IoThumbsDown className="w-5 h-5" />
+              <IoThumbsDown className="min-w-[16px] min-h-[16px] sm:w-5 sm:h-5" />
             </button>
           </div>
         )}
@@ -96,20 +98,17 @@ export default function HabitCard({
                 </span>
                 <div className="flex gap-2 items-center">
                   <span className="bg-[#2A2A2A]/60 border border-gold text-gold text-sm px-4 py-1 rounded-full inline-flex items-center gap-2">
-                    <BsFire className="text-orange-500" />
+                    <BsFire className="min-w-[16px] min-h-[16px] sm:w-5 sm:h-5 text-orange-500" />
                     <span>Streak</span>
                     <span>{habit.streak || 0}</span>
                   </span>
                   {habit.duration && (
                     <span className="bg-[#2A2A2A] text-yellow text-sm px-4 py-1 rounded-full inline-flex items-center gap-2">
-                      <IoTimer className="text-yellow" />
+                      <IoTimer className="min-w-[16px] min-h-[16px] sm:w-5 sm:h-5 text-yellow" />
                       {habit.duration >= 60
                         ? `${Math.floor(habit.duration / 60)}`
                         : `${habit.duration}`}
-                      <span
-                        className={inter.className}
-                        style={{ fontSize: "12px" }}
-                      >
+                      <span className={inter.className}>
                         {habit.duration >= 60 ? "h" : "m"}
                       </span>
                     </span>

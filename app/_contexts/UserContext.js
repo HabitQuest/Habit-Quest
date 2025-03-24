@@ -18,9 +18,19 @@ export const UserProvider = ({ children }) => {
 
       if (userCookie) {
         try {
-          setUser(JSON.parse(userCookie));
+          const parsedUser = JSON.parse(userCookie);
+          // Fetch fresh user data from the API
+          const response = await fetch(`/api/users/${parsedUser.id}`);
+          if (response.ok) {
+            const freshUserData = await response.json();
+            setUser(freshUserData);
+            // Update cookie with fresh data
+            document.cookie = `user=${JSON.stringify(freshUserData)}; path=/`;
+          } else {
+            setUser(parsedUser);
+          }
         } catch (error) {
-          console.error("Error parsing the user cookie:", error);
+          console.error("Error fetching user data:", error);
           setUser(null);
         }
       } else {
