@@ -40,22 +40,18 @@ export const handleThumbsUp = async (
     });
 
     if (response.ok) {
-      const updatedHabit = await response.json();
-      console.log("Received updated habit:", updatedHabit);
+      const data = await response.json();
+      const { habit: updatedHabit, user: updatedUser } = data;
 
       // Update habits state
       setHabits((prevHabits) =>
         prevHabits.map((h) => (h.id === habitId ? updatedHabit : h))
       );
 
-      // Update user state
-      const userResponse = await fetch(`/api/users/${user.id}`);
-      if (userResponse.ok) {
-        const updatedUser = await userResponse.json();
-        setUser(updatedUser);
-        // Update the user cookie with the new data
-        document.cookie = `user=${JSON.stringify(updatedUser)}; path=/`;
-      }
+      // Update user state with new data
+      setUser(updatedUser);
+      // Update the user cookie with the new data
+      document.cookie = `user=${JSON.stringify(updatedUser)}; path=/`;
     } else {
       const errorText = await response.text();
       console.error("Failed to update habit:", errorText);
@@ -102,22 +98,18 @@ export const handleThumbsDown = async (
     });
 
     if (response.ok) {
-      const updatedHabit = await response.json();
-      console.log("Received updated habit:", updatedHabit);
+      const data = await response.json();
+      const { habit: updatedHabit, user: updatedUser } = data;
 
       // Update habits state
       setHabits((prevHabits) =>
         prevHabits.map((h) => (h.id === habitId ? updatedHabit : h))
       );
 
-      // Update user state
-      const userResponse = await fetch(`/api/users/${user.id}`);
-      if (userResponse.ok) {
-        const updatedUser = await userResponse.json();
-        setUser(updatedUser);
-        // Update the user cookie with the new data
-        document.cookie = `user=${JSON.stringify(updatedUser)}; path=/`;
-      }
+      // Update user state with new data
+      setUser(updatedUser);
+      // Update the user cookie with the new data
+      document.cookie = `user=${JSON.stringify(updatedUser)}; path=/`;
     } else {
       const errorText = await response.text();
       console.error("Failed to update habit:", errorText);

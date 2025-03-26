@@ -63,25 +63,44 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { habit, habitType, time, duration, userId } = await request.json();
-
   try {
+    const { habit, habitType, time, duration, userId } = await request.json();
+
+    // Data validation (simple example)
+    if (
+      !userId ||
+      typeof habit !== "string" ||
+      !habit ||
+      typeof habitType !== "string" ||
+      !habitType
+    ) {
+      return new Response(JSON.stringify({ error: "Invalid input data" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const newHabit = await prisma.habit.create({
       data: {
         habit,
         habitType,
         time,
-        duration: duration || null,
+        duration: duration !== undefined ? duration : null,
         userId,
       },
     });
+
     return new Response(JSON.stringify(newHabit), {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
+    console.error("Error creating new habit:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to create new habit" }),
+      JSON.stringify({
+        error: "Failed to create new habit",
+        details: error.message,
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
