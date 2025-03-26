@@ -30,7 +30,7 @@ export default function HabitList({
         <h1 className="text-2xl text-yellow font-bold">Daily Habits</h1>
         <div className="flex items-center gap-4">
           <button
-            className={`bg-dark-green text-lg flex justify-center items-center hover:bg-[#1A1A1A] transition-colors duration-200 rounded-full w-12 h-12 ${
+            className={`bg-dark-green text-lg flex justify-center items-center hover:bg-yellow hover:text-black transition-colors duration-200 rounded-full w-12 h-12 ${
               editMode ? "text-neon-blue" : "text-white"
             }`}
             onClick={() => setEditMode(!editMode)}
@@ -38,7 +38,7 @@ export default function HabitList({
             <IoPencil />
           </button>
           <button
-            className="bg-dark-green text-white px-4 py-2 rounded-xl hover:bg-[#B65D04]"
+            className="bg-dark-green text-white px-4 py-2 rounded-xl hover:bg-yellow hover:text-black transition-colors duration-200"
             onClick={() => setShowModal(true)}
           >
             + New Habit

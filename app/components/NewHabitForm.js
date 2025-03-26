@@ -9,34 +9,46 @@ export default function NewHabitForm({ onSave, setShowModal }) {
   const [habitDuration, setHabitDuration] = useState("");
   const { user } = useUser();
 
+  const [error, setError] = useState("");
+
+  // Improved handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("/api/habits", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        habit,
-        habitType,
-        time: habitTime,
-        duration: habitDuration ? parseInt(habitDuration) : null,
-        userId: user.id,
-      }),
-    });
+    setError(""); // Reset previous errors
+    try {
+      const response = await fetch("/api/habits", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          habit,
+          habitType,
+          time: habitTime,
+          duration: habitDuration ? parseInt(habitDuration) : null,
+          userId: user.id,
+        }),
+      });
 
-    if (response.ok) {
-      const newHabit = await response.json();
-      onSave(newHabit);
-      setShowModal(false);
-      setHabitName("");
-      setHabitType("");
-      setHabitTime("");
-      setHabitDuration("");
-    } else {
-      console.error("Failed to create new habit");
+      if (response.ok) {
+        const newHabit = await response.json();
+        onSave(newHabit);
+        setShowModal(false);
+        setHabitName("");
+        setHabitType("");
+        setHabitTime("");
+        setHabitDuration("");
+      } else {
+        throw new Error("Failed to create new habit");
+      }
+    } catch (error) {
+      console.error("Failed to create new habit", error);
+      setError("Failed to create new habit. Please try again.");
     }
   };
+
+  // Use error in JSX
+  {
+    error && <p className="text-red-500 text-xs italic">{error}</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">

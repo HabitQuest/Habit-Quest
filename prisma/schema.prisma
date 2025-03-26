@@ -43,7 +43,7 @@ model Habit {
   habit         String
   habitType     String
   time          String   @default("00:00")
-  duration      Int      @default(15)
+  duration      Int      @default(0)
   frequency     String   @default("Daily")
   lastCompleted DateTime?
   mood          String?

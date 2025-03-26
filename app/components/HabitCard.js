@@ -82,7 +82,7 @@ export default function HabitCard({
         {/* Habit Content */}
         <div className="flex-1">
           <div className="flex justify-between items-start mb-3">
-            <div>
+            <div className="min-w-0 flex-1 pr-2">
               {/* Habit Name */}
               <div
                 className={`${balthazar.className} p-1 text-xl text-white ${
@@ -93,24 +93,38 @@ export default function HabitCard({
               </div>
               {/* Time */}
               <div className="flex flex-col gap-2">
-                <span className="bg-[#2A2A2A] text-yellow text-sm px-4 py-1 rounded-full inline-flex items-center justify-center">
-                  {formatTime(habit.time)}
-                </span>
+                <div className="w-fit">
+                  <span className="bg-[#2A2A2A]/60 text-yellow text-sm px-8 py-1 rounded-full inline-flex items-center justify-center">
+                    {formatTime(habit.time)}
+                  </span>
+                </div>
                 <div className="flex gap-2 items-center">
                   <span className="bg-[#2A2A2A]/60 border border-gold text-gold text-sm px-4 py-1 rounded-full inline-flex items-center gap-2">
                     <BsFire className="min-w-[16px] min-h-[16px] sm:w-5 sm:h-5 text-orange-500" />
                     <span>Streak</span>
                     <span>{habit.streak || 0}</span>
                   </span>
-                  {habit.duration && (
-                    <span className="bg-[#2A2A2A] text-yellow text-sm px-4 py-1 rounded-full inline-flex items-center gap-2">
+                  {habit.duration > 0 && (
+                    <span className="bg-[#2A2A2A]/60 text-yellow rounded-full text-sm px-4 py-1 inline-flex items-center gap-[0.15rem]">
                       <IoTimer className="min-w-[16px] min-h-[16px] sm:w-5 sm:h-5 text-yellow" />
-                      {habit.duration >= 60
-                        ? `${Math.floor(habit.duration / 60)}`
-                        : `${habit.duration}`}
-                      <span className={inter.className}>
-                        {habit.duration >= 60 ? "h" : "m"}
-                      </span>
+                      {habit.duration >= 60 ? (
+                        <>
+                          {Math.floor(habit.duration / 60)}
+                          <span className={inter.className}>h</span>
+                          {habit.duration % 60 > 0 && (
+                            <>
+                              {" "}
+                              {habit.duration % 60}
+                              <span className={inter.className}>m</span>
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {habit.duration}
+                          <span className={inter.className}>m</span>
+                        </>
+                      )}
                     </span>
                   )}
                 </div>
@@ -121,7 +135,7 @@ export default function HabitCard({
             <span
               className={`${
                 typeColors[habit.habitType]
-              } text-sm px-3 py-1 ml-2`}
+              } text-sm px-2 py-1 rounded-md`}
             >
               {habit.habitType}
             </span>

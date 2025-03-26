@@ -35,7 +35,7 @@ export async function PUT(request, { params }) {
       lastCompleted,
     });
 
-    // Calculate XP change
+    // Calculate XP changes
     let xpChange = 0;
     if (isThumbsUp) {
       xpChange = 10;
@@ -63,12 +63,65 @@ export async function PUT(request, { params }) {
       newXP = Math.max(0, newXP + 100);
     }
 
-    // Update user first
+    // Calculate class-specific XP and level changes
+    let classUpdates = {};
+    if (habit.habitType === "Mental") {
+      let newMageXP = habit.user.mageEXP + xpChange;
+      let newMageLevel = habit.user.mageLevel;
+
+      if (newMageXP >= 100) {
+        newMageLevel += 1;
+        newMageXP -= 100;
+      } else if (newMageXP < 0) {
+        newMageLevel = Math.max(1, newMageLevel - 1);
+        newMageXP = Math.max(0, newMageXP + 100);
+      }
+
+      classUpdates = {
+        mageEXP: newMageXP,
+        mageLevel: newMageLevel,
+      };
+    } else if (habit.habitType === "Physical") {
+      let newWarriorXP = habit.user.warriorEXP + xpChange;
+      let newWarriorLevel = habit.user.warriorLevel;
+
+      if (newWarriorXP >= 100) {
+        newWarriorLevel += 1;
+        newWarriorXP -= 100;
+      } else if (newWarriorXP < 0) {
+        newWarriorLevel = Math.max(1, newWarriorLevel - 1);
+        newWarriorXP = Math.max(0, newWarriorXP + 100);
+      }
+
+      classUpdates = {
+        warriorEXP: newWarriorXP,
+        warriorLevel: newWarriorLevel,
+      };
+    } else if (habit.habitType === "Swift") {
+      let newRogueXP = habit.user.rogueEXP + xpChange;
+      let newRogueLevel = habit.user.rogueLevel;
+
+      if (newRogueXP >= 100) {
+        newRogueLevel += 1;
+        newRogueXP -= 100;
+      } else if (newRogueXP < 0) {
+        newRogueLevel = Math.max(1, newRogueLevel - 1);
+        newRogueXP = Math.max(0, newRogueXP + 100);
+      }
+
+      classUpdates = {
+        rogueEXP: newRogueXP,
+        rogueLevel: newRogueLevel,
+      };
+    }
+
+    // Update user with both overall and class-specific changes
     const updatedUser = await prisma.user.update({
       where: { id: habit.userId },
       data: {
         overallEXP: newXP,
         overallLevel: newLevel,
+        ...classUpdates,
       },
     });
 
@@ -85,10 +138,13 @@ export async function PUT(request, { params }) {
 
     console.log("Updated habit:", updatedHabit);
 
-    return new Response(JSON.stringify(updatedHabit), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ habit: updatedHabit, user: updatedUser }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     console.error("Error updating habit:", error);
     return new Response(
